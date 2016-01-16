@@ -63,7 +63,7 @@
                 dialog = this.createDialog({
                     title      : '发布',
                     width      : 380,
-                    height     : 305,
+                    height     : 330,
                     name       : dialogName,
                     content    : dialogContent,
                     mask       : settings.dialogShowMask,
@@ -107,7 +107,10 @@
 							    type: 'post',  
 							    success: function(data) {  
 							        if(data.code ==0 ){  
-							            alert("成功！");  
+										var msg = "发布成功！\n\n是否去首页查看？"; 
+										if (confirm(msg)==true){ 
+										    window.location.href = '/';
+										}else{ }
 							            publish_success();
 							        }else{  
 							            alert(data.msg);  
