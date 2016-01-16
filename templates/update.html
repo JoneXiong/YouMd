@@ -8,6 +8,7 @@
 	<script src="/static/js/publish-dialog.js"></script>
 	<script type="text/javascript">
 	    $(function() {
+	    	var loadicon = true;
 	    	var raw_url = '{{ raw_url }}';
 			$.get(raw_url, function(md){
 		        var editor = editormd("editormd", {
@@ -28,7 +29,10 @@
 	                	window.localStorage.setItem("youmd_content_update",this.getValue());
 	                },
 	                toolbarIcons : function() {
-	                	window.editormd.toolbarModes.full.push("||", "update");
+	                	if (loadicon){
+	                		window.editormd.toolbarModes.full.push("||", "update");
+	                		loadicon = false;
+	                		}
 	                	return window.editormd.toolbarModes.full;
 	                },
 			        toolbarIconTexts : {
