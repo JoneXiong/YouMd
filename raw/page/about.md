@@ -1,22 +1,25 @@
-##About
 
-This blog is about IT technology such as web, database and development.
-Additional, I'll share some of my individual life, especially about reading and
-varied opinions. Hope you will like it and discuss.
+# YouMd
+基于 [Editor.md](https://github.com/pandao/editor.md) 的MarkDown在线书写工具，很方便在本地/局域网/服务器快速运行，即时保存，在线管理
 
-##Work
+# 特性
+* 快速便捷地运行，拿来即用
+* 即时保存到本地客户端
+* 在线管理和查阅
 
-IT Engineer 2011.7 ~ Now
+# 使用
+运行
+```python
+python server.py
+```
+访问：
+http://localhost:8081/
 
-##Info
+# 定位
+拿来即用的MarkDown编辑器；
+如果你愿意它会是一个不错的轻博客系统（纯文档化）；
+如果你想到了，它也可以是便捷的团队文档wiki系统
 
-* ![douban](/static/img/about/douban.png) [douban.com](http://www.douban.com/people/dylanninin/)
-* ![weibo](/static/img/about/weibo.png) [weibo.com](http://weibo.com/dylanninin)
-* ![twitter](/static/img/about/twitter.png) [twitter.com](https://twitter.com/dylanninin)
-* ![facebook](/static/img/about/facebook.png) [facebook.com](https://www.facebook.com/dylanninin)
-* ![blog](/static/img/about/dylanninin.png) [dylanninin.com](http://www.dylanninin.com)
-* ![me](/static/img/about/me.png) [about.me](http://about.me/dylanninin)
+# 参与
 
-##Contact
-
-* ![gmail](/static/img/about/gmail.png) dylanninin@gmail.com
+* ![github](/static/img/about/gmail.png)  https://github.com/JoneXiong/YouMd
