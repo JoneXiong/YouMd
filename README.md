@@ -23,6 +23,8 @@ http://localhost:8081/
 
 Screenshots
 ========
+![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/editor.png)
+
 ![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/blog.jpg)
 
 ![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/publish.jpg)
