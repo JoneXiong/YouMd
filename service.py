@@ -78,7 +78,7 @@ class EntryService:
                     title = title_raw.split(':')[1].strip()
                     categories_str = category_raw.split(':')[1].strip()
                     categories = categories_str and categories_str.split(',') or []
-                    tags_str = tags_raw.split(':')[1].strip()[1:-2]
+                    tags_str = tags_raw.split(':')[1].strip()[1:-1]
                     tags = tags_str and tags_str.split(',') or []
                     header = ''.join([start, layout_raw, title_raw, category_raw, tags_raw, end])
                 else:
