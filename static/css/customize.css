@@ -1,0 +1,110 @@
+#content { 
+    margin-top:50px; 
+    margin-bottom:30px;
+    min-height:768px;
+} 
+ 
+.content-nav { 
+	margin-top:10px; 
+	margin-bottom:10px; 
+} 
+
+
+.asset-content{
+	margin-top:10px; 
+} 
+
+.modal-footer {
+    text-align:center;
+}
+
+.excerpt-more{
+	padding-top:10px;
+}
+
+.excerpt-meta, .entry-meta{
+	padding-bottom:10px;
+}
+
+.entry-tag h4, .entry-category h4 { 
+    display: inline; 
+}
+
+.entry-category { 
+    margin-bottom:10px; 
+} 
+
+.entry-tag ul, .entry-category ul { 
+    display: inline; 
+    list-style: none; 
+    margin-left: 0; 
+    padding-left: 0; 
+} 
+
+.entry-tag ul li, .entry-category ul li { 
+    display: inline; 
+}
+
+
+.widget-tag-cloud .widget-content ul {
+    margin-right: 0;
+    margin-left: 0; 
+ } 
+ 
+.widget-tag-cloud .widget-content li { 
+    display: inline; 
+    margin: 0 5px 0 0; 
+    padding: 0; 
+    line-height: 1.6; 
+    background: none; 
+ } 
+
+.widget-tag-cloud .rank-1 {
+    font-size: 1.75em; 
+} 
+ 
+.widget-tag-cloud .rank-2 { 
+    font-size: 1.75em; 
+} 
+
+.widget-tag-cloud .rank-3 { 
+    font-size: 1.625em; 
+}
+
+.widget-tag-cloud .rank-4 { 
+    font-size: 1.5em; 
+} 
+
+.widget-tag-cloud .rank-5 { 
+    font-size: 1.375em; 
+} 
+
+.widget-tag-cloud .rank-6 { 
+    font-size: 1.25em; 
+} 
+
+.widget-tag-cloud .rank-7 { 
+    font-size: 1.125em; 
+} 
+
+.widget-tag-cloud .rank-8 { 
+    font-size: 1em; 
+} 
+
+.widget-tag-cloud .rank-9 { 
+    font-size: 0.95em; 
+} 
+
+.widget-tag-cloud .rank-10 { 
+    font-size: 0.9em; 
+} 
+
+.widget-calendar .widget-content table { 
+    border-collapse: collapse; width: 100%; 
+} 
+ 
+.widget-calendar .widget-content th, .widget-calendar .widget-content td { 
+    text-align: center; 
+    width: 14%; 
+    padding: 2px 0; 
+}
