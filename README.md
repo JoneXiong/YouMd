@@ -11,7 +11,9 @@
 python server.py
 
 访问：
-http://localhost:8081/
+首页 http://localhost:8081/
+编辑器 http://localhost:8081/new
+
 
 # 说明
 发布保存的文档默认以.md存放在raw/entry/目录下
