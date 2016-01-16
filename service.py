@@ -1,20 +1,11 @@
-#!/usr/bin/env python
-"""Entry Service.
-
-version 1.0
-history:
-2013-6-19    dylanninin@gmail.com    init
-2013-11-23    dylanninin@gmail.com     update tags, categories
-
-"""
-# -*- coding: utf-8 -*-
+# coding=utf-8
 
 import os
 import codecs
 import re
 import datetime
 import random
-import markdown
+
 import config
 from model import Models
 import config
@@ -101,7 +92,11 @@ class EntryService:
             except:pass
             entry.content = content
             entry.header = header
-            entry.html = markdown.markdown(content,extensions=['markdown.extensions.codehilite','markdown.extensions.toc','markdown.extensions.fenced_code','markdown.extensions.tables'])
+            if config.backend_md:
+                import markdown
+                entry.html = markdown.markdown(content,extensions=['markdown.extensions.codehilite','markdown.extensions.toc','markdown.extensions.fenced_code','markdown.extensions.tables'])
+            else:
+                entry.html = ''
             entry.excerpt = content[:200] + ' ... ...'
             entry.categories = categories
             entry.tags = tags

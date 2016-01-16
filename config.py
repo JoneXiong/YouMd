@@ -39,3 +39,6 @@ ranks = 10
 subscribe = 10
 cache = False
 debug = True
+
+use_comment = False
+backend_md = False
