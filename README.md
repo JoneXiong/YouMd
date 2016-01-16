@@ -13,7 +13,7 @@ python server.py
 访问：
 首页 http://localhost:8081/
 
-编辑器 http://localhost:8081/new
+  编辑器 http://localhost:8081/new
 
 
 # 说明
