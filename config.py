@@ -42,3 +42,4 @@ debug = True
 
 use_comment = False
 backend_md = False
+admin_pwd = ''

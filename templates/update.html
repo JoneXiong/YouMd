@@ -41,10 +41,12 @@
 			        },
 			        toolbarHandlers : {
 			        	update : function(cm, icon, cursor, selection) {
+							var password = window.prompt('管理密码','');
 							$.ajax( {  
 							    url: '/update_save',
 							    data:{
 							    	raw_url: raw_url,
+							    	password: password,
 							    	content: cm.getValue()
 							    },  
 							    type: 'post',  
