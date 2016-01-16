@@ -25,6 +25,6 @@ Screenshots
 ========
 ![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/blog.jpg)
 
-![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/publish.png)
+![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/publish.jpg)
 
 ![data](https://github.com/JoneXiong/YouMd/raw/master/static/img/update.jpg)
