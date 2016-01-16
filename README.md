@@ -7,12 +7,19 @@
 * 在线管理和查阅
 
 # 使用
-运行
-```python
+运行：
 python server.py
-```
+
 访问：
 http://localhost:8081/
+
+# 说明
+发布保存的文档默认以.md存放在raw/entry/目录下
+
+可配置的地方如下：
+* config.py 配置一些常量、路径等
+* templates/layout/ 配置站点头部、尾部及主菜单
+
 
 # 定位
 拿来即用的MarkDown编辑器；
