@@ -1,0 +1,10 @@
+% if not categories == None and not categories == []: 
+	<div class="entry-category">
+	   <span class="label label-success"><i class="icon-folder-open"></i> Category</span>
+		<ul>
+			% for category in categories:
+				<li><a href="{{ config.search_url }}?type=category&value={{ category }}&start={{ config.start }}&limit={{ config.limit }}">{{ category }}</a></li>
+			% end
+		</ul>
+	</div>
+% end

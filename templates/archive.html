@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang='zh'>
-	% include layout/header.html config=config, title=config.name
+	% include layout/header.html config=config, title=params.archive.title
 <body>
-	% include layout/navbar.html config=config
+    % include layout/navbar.html config=config
 	<div id="content">
 		<div class="container">
 			<div class="row">
 				<div class="span9">
-					<div id="excerpts">
-					% for entry in params.entries:
-						% include modules/excerpt.html excerpt=entry
-					% end
-					</div>
-					% include modules/pager.html pager=params.pager, config=config
+					% include modules/archive.html archive=params.archive, entries=params.entries
 				</div>
 				<!--
 				<div class="span3">

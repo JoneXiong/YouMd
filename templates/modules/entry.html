@@ -1,0 +1,15 @@
+<div class="entry">
+	<div class="entry entry-detail">
+		<div class="entry-header">
+			<h1 class="entry-title">{{ entry.name }}</h1>
+			<div class="entry-meta">
+				<span class="entry-by">
+					<i class="icon-user"></i> <a href="{{ entry.author.url }}">{{ entry.author.name }}</a> on {{ entry.time }} <a href="{{ entry.update_url }}"><i class="icon-edit"></i></a>
+				</span>
+			</div>
+		</div>
+		<div class="entry-content">
+			{{! entry.html }} 
+		</div>
+	</div>
+</div>

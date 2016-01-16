@@ -1,0 +1,15 @@
+<div class="archives">
+    <h1 class="archives archives-head">{{ archive.title }}</h1>
+    <ul>
+       % if archive.type == 'entry':
+           % for entry in entries:
+	           <li class="archives archive-date">{{ entry.date }} : <a href="{{ entry.url }}">{{ entry.name }}</a></li>
+	       % end
+	   % end
+       % if archive.type == 'raw':
+           % for entry in entries:
+               <li class="archives archive-date">{{ entry.date }} : <a href="{{ entry.update_url }}">{{ entry.name }}</a></li>
+           % end
+       % end
+    </ul>
+</div>

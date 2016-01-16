@@ -1,0 +1,8 @@
+<div class="search">
+	<div class='search-title'>
+	   <h3>{{ search.title }}</h3>
+	</div>
+	% for excerpt in entries:
+		% include modules/excerpt.html excerpt=excerpt
+	% end
+</div>

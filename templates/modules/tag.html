@@ -1,0 +1,10 @@
+% if not tags == None and not tags == [] :
+	<div class="entry-tag">
+	    <h4><span class="label label-info"><i class="icon-tags"></i> Tag</span></h4>
+		<ul >
+			% for tag in tags:
+			  <li><a href="{{ config.search_url }}?type=tag&value={{ tag }}&start={{ config.start }}&limit={{ config.limit }}">{{ tag }}</a></li>
+			% end
+		</ul>
+	</div>
+% end

@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang='zh'>
-	% include layout/header.html config=config, title=config.name
+	% include layout/header.html config=config, title=params.search.title
 <body>
-	% include layout/navbar.html config=config
+    % include layout/navbar.html config=config
 	<div id="content">
 		<div class="container">
 			<div class="row">
 				<div class="span9">
-					<div id="excerpts">
-					% for entry in params.entries:
-						% include modules/excerpt.html excerpt=entry
-					% end
-					</div>
+					% include modules/search.html search=params.search, entries=params.entries
 					% include modules/pager.html pager=params.pager, config=config
 				</div>
 				<!--

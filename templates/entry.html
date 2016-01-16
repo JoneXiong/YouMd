@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='zh'>
+	% include layout/header.html config=config, title=params.entry.name
+<body>
+	% include layout/navbar.html config=config
+	<div id="content">
+		<div class="container">
+			<div class="row">
+				<div class="span9">
+					% include modules/entry.html entry=params.entry
+					<hr>
+					% include modules/info.html entry=params.entry, config=config
+					% include modules/category.html categories=params.entry.categories, config=config
+					% include modules/tag.html tags=params.entry.tags, config=config
+					% include modules/related.html related_entries=params.entries, config=config
+					<hr>
+					% include modules/comment.html config=config, entry=params.entry		
+				</div>
+				<!--
+				<div class="span3">
+				</div>
+				-->
+				<div class="span3">
+					% include layout/three/secondary.html params=params.secondary, config=config
+					% include layout/three/primary.html params=params.primary, config=config
+				</div>
+			</div>
+		</div>
+	</div>
+	% include misc/analytics.html config=config
+	% include layout/footer.html config=config
+</body>
+</html>

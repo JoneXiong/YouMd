@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>{{ config.name }}</title>
+	<subtitle>Atom Feed of {{ config.name }}</subtitle>
+	<link rel="alternate" type="text/html" href="{{ config.home }}"/>
+	<link rel="self" type="application/atom+xml" href="{{ config.home }}{{ config.subscribe_url }}"/>
+	<id>{{ config.home }}</id>
+	<updated>{{ params.subscribe.updated }}</updated>
+	<generator uri="https://github.com/JoneXiong/YouMd">YouMd</generator>
+	% for entry in params.entries:
+    	<entry>
+    		<title>{{ entry.name }}</title>
+    		<link rel="alternate" type="text/html" href="{{ config.home }}{{ entry.url }}"/>
+		<id>{{ config.home }}{{ entry.url }}</id>
+    		<published>{{ entry.time }}</published>
+    		<updated>{{ entry.time }}</updated>
+    		<summary>{{! entry.excerpt }}</summary>
+    		<author>
+    			<name>{{ entry.author.name }}</name>
+    			<uri>{{ entry.author.url }}</uri>
+    		</author>
+    		<content>
+    		<![CDATA[
+    			{{! entry.html }}
+    		]]>
+    		</content>
+    	</entry>
+    % end
+</feed>

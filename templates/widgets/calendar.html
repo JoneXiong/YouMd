@@ -1,0 +1,32 @@
+<div class="widget-calendar">
+	<h3 class="widget-header">{{ calendar.display }}</h3>
+	<div class="widget-content">
+		<table summary="Monthly calendar with links to daily posts">
+			<tr>
+				<th abbr="Sunday">Sun</th>
+				<th abbr="Monday">Mon</th>
+				<th abbr="Tuesday">Tue</th>
+				<th abbr="Wednesday">Wed</th>
+				<th abbr="Thursday">Thu</th>
+				<th abbr="Friday">Fri</th>
+				<th abbr="Saturday">Sat</th>
+			</tr>
+			% for week in calendar.days:
+			     <tr>
+			     % for day in week:
+			         <td>
+			         % if day == 0:
+			             {{ calendar.urls[day] }}
+			         % end
+			         % if day > 0 and calendar.urls[day] == None:
+			             {{ day }}
+			         % end
+			         % if day > 0 and not calendar.urls[day] == None:
+			             <a href="{{ calendar.urls[day] }}">{{ day }}</a>
+			         % end
+			     % end
+			     </tr>
+			% end
+		</table>
+	</div>
+</div>

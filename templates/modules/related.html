@@ -1,0 +1,10 @@
+% if not related_entries == None and not related_entries == []:
+	<div class="related-entry">
+	    <h4><span class="label label-warning"><i class="icon-question-sign"></i> Related</span></h4>
+	    <ul>
+            % for entry in related_entries:
+				<li><i class="icon-share-alt"></i> {{ entry.date }} : <a href="{{ entry.url }}">{{ entry.name }}</a></li>
+			% end
+	    </ul>
+	</div>
+% end

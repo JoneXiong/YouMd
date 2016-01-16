@@ -1,0 +1,11 @@
+<div class="entry-info">
+    <div class="entry-info-content">
+        <h4><span class="label label-info"><i class="icon-info-sign"></i> Information</span></h4>
+    	<ul>
+    		<li><i class="icon-file"></i> <a href="{{ entry.url }}">{{ entry.name }}</a></li>
+    		<li><i class="icon-share-alt"></i> <a href="{{ entry.url }}">{{ config.home }}{{ entry.url }}</a>
+    		<li><i class="icon-th"></i> <a href="{{ entry.update_url }}">{{ config.home }}{{ entry.raw_url }}</a></li>
+    		<li><i class="icon-user"></i> <a href="{{ entry.author.url }}">{{ entry.author.name }}</a> on {{ entry.time }}</li>
+    	</ul>
+    </div>
+</div>
