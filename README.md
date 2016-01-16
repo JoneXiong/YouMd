@@ -23,6 +23,8 @@ python server.py
 * config.py 配置一些常量、路径等
 * templates/layout/ 配置站点头部、尾部及主菜单
 
+页面上点edit图标即可直接进入编辑修改
+
 
 # 定位
 拿来即用的MarkDown编辑器；
