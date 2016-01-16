@@ -20,3 +20,11 @@ http://localhost:8081/
 如果你愿意它会是一个不错的轻博客系统（纯文档化）；
 
 如果你想到了，它也可以是便捷的团队文档wiki系统
+
+Screenshots
+========
+![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/blog.jpg)
+
+![info](https://github.com/JoneXiong/YouMd/raw/master/media/img/publish.png)
+
+![data](https://github.com/JoneXiong/YouMd/raw/master/media/img/update.jpg)
