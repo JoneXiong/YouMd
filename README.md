@@ -42,3 +42,8 @@ Screenshots
 ![info](https://github.com/JoneXiong/YouMd/raw/master/static/img/publish.jpg)
 
 ![data](https://github.com/JoneXiong/YouMd/raw/master/static/img/update.jpg)
+
+# 计划
+- 加入管理权限验证
+- 增加对团队多人发布与检索的支持
+- 加入跟丰富多样的wiki组织形式
