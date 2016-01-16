@@ -8,6 +8,7 @@
 	<script src="/static/js/publish-dialog.js"></script>
 	<script type="text/javascript">
 	    $(function() {
+	    	var loadicon = true;
 	    	$('#editormd textarea').val( window.localStorage.getItem('youmd_content') );
 	        var editor = editormd("editormd", {
                 width: "90%",
@@ -26,7 +27,10 @@
                 	window.localStorage.setItem("youmd_content",this.getValue());
                 },
                 toolbarIcons : function() {
-                	window.editormd.toolbarModes.full.push("||", "publish");
+                	if (loadicon){
+                		window.editormd.toolbarModes.full.push("||", "publish");
+                		loadicon = false;
+                		}
                 	return window.editormd.toolbarModes.full;
                 },
 		        toolbarIconTexts : {
