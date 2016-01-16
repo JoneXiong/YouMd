@@ -3,16 +3,28 @@
 
 # 特性
 * 快速便捷地运行，拿来即用
-* 即时保存到本地客户端
-* 在线管理和查阅
+* 即时保存到本地客户端，一键发布到目录
+* 无数据库，纯文档化，在线管理和查阅
 
 # 使用
-运行
-```python
+运行：
 python server.py
-```
+
 访问：
-http://localhost:8081/
+首页 http://localhost:8081/
+
+编辑器 http://localhost:8081/new
+
+
+# 说明
+发布保存的文档默认以.md存放在raw/entry/目录下
+
+可配置的地方如下：
+* config.py 配置一些常量、路径等
+* templates/layout/ 配置站点头部、尾部及主菜单
+
+页面上点edit图标即可直接进入编辑修改
+
 
 # 定位
 拿来即用的MarkDown编辑器；
