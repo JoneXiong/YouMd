@@ -98,6 +98,9 @@ def Update(url):
 @route('/update_save', method='POST')
 def UpdateSave():
     raw_url = request.POST.get("raw_url",'')
+    password = request.POST.get("password",'')
+    if password!=config.admin_pwd:
+        return {'code': -1, 'msg': '密码错误'}
     content = request.POST.get("content",'').strip()
     
     entry_url = raw_url.replace(config.raw_url, config.entry_url).replace(config.raw_suffix, config.url_suffix)
@@ -110,7 +113,7 @@ def UpdateSave():
     m_file.write('%s\n%s'%(entry.header,content) )
     m_file.close()
     entryService.add_entry(True, entry.path)
-    return {'code': 0, 'msg': '成功'}
+    return {'code': 0, 'msg': '更新成功'}
 
 @route('/publish', method='POST')
 def publish():
@@ -118,6 +121,9 @@ def publish():
     title = request.POST.get("title",None)
     cat = request.POST.get("cat",'')
     tag = request.POST.get("tag",'')
+    password = request.POST.get("password",'')
+    if password!=config.admin_pwd:
+        return {'code': -1, 'msg': '密码错误'}
     content = request.POST.get("content",'').strip()
     
     head = '''---
@@ -134,4 +140,4 @@ tags: [%s]
     m_file.write('%s\n%s'%(head,content) )
     m_file.close()
     entryService.add_entry(True, path)
-    return {'code': 0, 'msg': '成功'}
+    return {'code': 0, 'msg': '发布成功'}

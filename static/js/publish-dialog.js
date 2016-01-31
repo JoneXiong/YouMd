@@ -55,12 +55,15 @@
                                         "<label>文件名</label>" +
                                         "<input type=\"text\" value=\"\" data-name />" +
                                         "<br/>" +
+                                        "<label>管理密码</label>" +
+                                        "<input type=\"password\" value=\"\" data-password />" +
+                                        "<br/>" +
                                     ( (settings.imageUpload) ? "</form>" : "</div>");
 				// dialog定义开始
                 dialog = this.createDialog({
                     title      : '发布',
                     width      : 380,
-                    height     : 285,
+                    height     : 330,
                     name       : dialogName,
                     content    : dialogContent,
                     mask       : settings.dialogShowMask,
@@ -76,6 +79,7 @@
                             var alt  = this.find("[data-alt]").val();
                             var link = this.find("[data-link]").val();
                             var name = this.find("[data-name]").val();
+                            var password = this.find("[data-password]").val();
 
                             if (url === ""){
                                 alert('标题不能为空');
@@ -88,6 +92,7 @@
                             var dia = this;
 		                    function publish_success(){
 			                    dia.hide().lockScreen(false).hideMask();
+			                    //cm.setValue('');
 		                    }
 							$.ajax( {  
 							    url: '/publish',
@@ -96,12 +101,16 @@
 							    	cat: alt,
 							    	tag: link,
 							    	name: name,
+							    	password: password,
 							    	content: cm.getValue()
 							    },  
 							    type: 'post',  
 							    success: function(data) {  
 							        if(data.code ==0 ){  
-							            alert("成功！");  
+										var msg = "发布成功！\n\n是否去首页查看？"; 
+										if (confirm(msg)==true){ 
+										    window.location.href = '/';
+										}else{ }
 							            publish_success();
 							        }else{  
 							            alert(data.msg);  

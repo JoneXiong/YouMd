@@ -65,6 +65,7 @@ class EntryService:
             entry.date = date
             entry.time = time
             #header, title, categories, tags = extract.parse(entry)
+            print 'parse',entry.path
             with open(entry.path, 'r') as f:
                 start = f.readline()
                 if '---' in start.strip():
