@@ -8,7 +8,7 @@
 	   % end
        % if archive.type == 'raw':
            % for entry in entries:
-               <li class="archives archive-date">{{ entry.date }} : <a href="{{ entry.update_url }}">{{ entry.name }}</a></li>
+               <li class="archives archive-date">{{ entry.date }} : <a href="javascript:void(0);" onclick="delete_post( '{{ entry.raw_url }}', function(){window.location.reload();} );"><i class="icon-remove-sign"></i></a> <a href="{{ entry.update_url }}">{{ entry.name }}</a></li>
            % end
        % end
     </ul>
