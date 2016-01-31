@@ -10,6 +10,7 @@ import pickle
 import os
 import threading
 import time
+from mole import request
 
 #import memcache
 #from sqlalchemy.ext.declarative import declarative_base, Column
@@ -634,7 +635,9 @@ def authenticator(login_url = '/login'):
                     session = get_current_session()
                     username = session["username"]
                 except (KeyError, TypeError):
-                    redirect(login_url)
+                    next = request.path
+                    _url = '%s?next=%s'%(login_url, next)
+                    redirect(_url)
                 return handler(*a, **ka)
             return check_auth
         return decorator

@@ -5,11 +5,15 @@ from mole.template import template
 from mole import request
 from mole import response
 from mole.mole import json_dumps
+from mole import redirect
+from mole.sessions import get_current_session, authenticator
 
 import config
 from __init__ import entryService
 
 media_prefix = 'static'
+auth_required = authenticator(login_url = '/auth/login')
+
 @route('/%s/:file#.*#'%media_prefix)
 def media(file):
     return static_file(file, root='./static')
@@ -91,11 +95,14 @@ def Raw(url):
 
 
 @route('/update:url#.*#')
+@auth_required()
 def Update(url):
     url = config.raw_url + url
     return template('update', raw_url=url)
 
+
 @route('/update_save', method='POST')
+@auth_required()
 def UpdateSave():
     raw_url = request.POST.get("raw_url",'')
     password = request.POST.get("password",'')
@@ -115,7 +122,9 @@ def UpdateSave():
     entryService.add_entry(True, entry.path)
     return {'code': 0, 'msg': '更新成功'}
 
+
 @route('/publish', method='POST')
+@auth_required()
 def publish():
     name = request.POST.get("name",None)
     title = request.POST.get("title",None)
@@ -141,3 +150,23 @@ tags: [%s]
     m_file.close()
     entryService.add_entry(True, path)
     return {'code': 0, 'msg': '发布成功'}
+
+@route('/auth/login', method=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        username = request.POST.get("username",'')
+        password = request.POST.get("password",'')
+        if password!=config.admin_pwd or username!=config.admin_user:
+            return {'code': -1, 'msg': '用户名或密码错误'}
+        else:
+            session = get_current_session()
+            session['username'] = config.admin_user
+            return {'code': 0, 'msg': 'OK'}
+    else:
+        return template('auth/login.html', config=config)
+
+@route('/auth/logout')
+def logout():
+    session = get_current_session()
+    del session['username']
+    return redirect(request.params.get('next') or '/')

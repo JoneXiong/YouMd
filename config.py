@@ -42,4 +42,10 @@ debug = True
 
 use_comment = False
 backend_md = False
-admin_pwd = ''
+admin_pwd = 'youmd'
+admin_user = 'admin'
+
+def cur_user():
+    from mole.sessions import get_current_session
+    session = get_current_session()
+    return session.get('username','')
