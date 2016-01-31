@@ -45,20 +45,21 @@
 			        },
 			        toolbarHandlers : {
 			        	update : function(cm, icon, cursor, selection) {
-							var password = window.prompt('管理密码','');
 							$.ajax( {  
 							    url: '/update_save',
 							    data:{
 							    	raw_url: raw_url,
-							    	password: password,
 							    	content: cm.getValue()
 							    },  
 							    type: 'post',  
 							    success: function(data) {  
 							        if(data.code ==0 ){  
 							            alert("成功！");  
-							        }else{  
-							            alert(data.msg);  
+							        }else if(data.code ==-2){
+							        	//href = '/auth/login?next='+window.location.pathname;
+							        	href = '/auth/login?pop=1';
+							            var win = window.open(href, 'login_window', 'height=450,width=780,resizable=yes,scrollbars=yes');
+							            win.focus();
 							        }  
 							     },  
 							     error : function() {  
