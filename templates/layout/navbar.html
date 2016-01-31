@@ -16,6 +16,11 @@
     					<li><a href="{{ config.subscribe_url }}"><i class="icon-plus icon-white"></i> 订阅</a></li>
     					<li><a href="/new"><i class="icon-edit icon-white"></i> 编辑器</a></li>
     				</ul>
+    				% if config.cur_user():
+    				<ul class="nav pull-right">
+    					<li><a href="/auth/logout"><i class="icon-off icon-white"></i> 退出</a></li>
+    				</ul>
+    				% end
     				<form class="navbar-search pull-right" method="GET" action="{{ config.search_url }}">
     					<i class="icon-search icon-white"></i><input type="text" class="search-query span2" name="value" placeholder="{{ config.search_holder }}"/>
     					<input type="hidden" name="type" value="query" />
