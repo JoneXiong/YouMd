@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from mole.mole import default_app
+from server import app
 
-application=default_app()
+application=app()
 

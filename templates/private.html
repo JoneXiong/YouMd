@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang='zh'>
+	% include layout/header.html config=config, title=params.archive.title
+<body>
+    % include layout/navbar.html config=config
+	<div id="content">
+		<div class="container">
+			<div class="row">
+				<div class="span9">
+					% include modules/archive.html archive=params.archive, entries=params.entries
+				</div>
+			</div>
+		</div>
+	</div>
+	% include layout/footer.html config=config
+	<script src="{{ config.static_url }}/js/admin.js"></script>
+</body>
+</html>

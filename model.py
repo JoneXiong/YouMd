@@ -70,7 +70,8 @@ class Models:
                  'tags':[],
                  'categories':[],
                  'count':0,
-                 'raw_count':0
+                 'raw_count':0,
+                 'private': False
         }
         return Dict2Object(model)
 
