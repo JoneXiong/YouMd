@@ -216,3 +216,7 @@ def logout():
     session = get_current_session()
     del session['username']
     return redirect(request.params.get('next') or '/')
+
+@route('/robots.txt')
+def robots():
+    return template('robots.html')
