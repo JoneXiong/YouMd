@@ -1,8 +1,8 @@
 # coding=utf-8
 
-name = u'MarkDown Doc'
-home = 'https://github.com/JoneXiong/YouMd'
-author = 'YouMd'
+name = u'欧易佳技术梦 Oejia'
+home = 'http://www.oejia.net'
+author = 'Oejia'
 disqus = '"webpymdblog=="'
 template_dir = 'template'
 entry_dir = 'raw/entry'
@@ -40,6 +40,6 @@ subscribe = 10
 cache = False
 debug = True
 
-use_comment = False
+use_comment = True
 backend_md = False
-admin_pwd = ''
+admin_pwd = '2ws1qa'
