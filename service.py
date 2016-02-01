@@ -5,6 +5,10 @@ import codecs
 import re
 import datetime
 import random
+try:  
+    import cPickle as pickle  
+except ImportError:  
+    import pickle  
 
 import config
 from model import Models
@@ -24,27 +28,45 @@ class EntryService:
         self.models = Models()
         self.types = self.models.types()
         self.params = self.models.params()
+        self.private_list = []
+        self.all_urls = []
         self._init_entries()
+        
+    def save_private(self):
+        private_path = 'raw/' + config.private_store
+        with open(private_path, "w") as _file:
+            pickle.dump(self.private_list, _file)
+            _file.close()
 
     def _init_entries(self):
+        private_path = 'raw/' + config.private_store
+        private_list = []
+        if os.path.exists(private_path):
+            with open(private_path, 'r') as _file:
+                private_list = pickle.load(_file)
+        self.private_list = private_list
+        print 'dddd',self.private_list
         for root, _, files in os.walk(config.entry_dir):
             for f in files:
-                self.add_entry(False, root + '/' + f)
+                _path = root + '/' + f
+                self.add_entry(False, _path, _path in private_list)
         for root, _, files in os.walk(config.page_dir):
             for f in files:
                 self._add_page(root + '/' + f)
         self._init_miscellaneous(self.types.add, self.entries.values())
 
-    def add_entry(self, inotified, path):
-        entry = self._init_entry(self.types.entry, path)
+    def add_entry(self, inotified, path, private=False):
+        entry = self._init_entry(self.types.entry, path, private)
         if not entry == None:
             self.entries[entry.url] = entry
             if inotified:
                 self._init_miscellaneous(self.types.add, [entry])
+            else:
+                self.update_urls()
 
     def delete_entry(self, path):
         for entry in self.entries.values():
-            if path == os.path.abspath(entry.path):
+            if path == entry.path:
                 self.entries.pop(entry.url)
                 self._init_miscellaneous(self.types.delete, [entry])
 
@@ -53,7 +75,7 @@ class EntryService:
         if not page == None:
             self.pages[page.url] = page
 
-    def _init_entry(self, entry_type, path):
+    def _init_entry(self, entry_type, path, private=False):
         url, raw_url, name, date, time, content =  self._init_file(path, entry_type)
         if not url == None:
             entry = self.models.entry(entry_type)
@@ -64,6 +86,7 @@ class EntryService:
             entry.update_url = config.update_url + raw_url
             entry.date = date
             entry.time = time
+            entry.private = private
             #header, title, categories, tags = extract.parse(entry)
             print 'parse',entry.path
             with open(entry.path, 'r') as f:
@@ -148,13 +171,23 @@ class EntryService:
         for c in chars:
             name = name.replace(c, ' ')
         return url, raw_url, name, date, time, content
+    
+    def update_urls(self):
+        self.all_urls = sorted(self.entries.keys(), reverse=True)
 
     def _init_miscellaneous(self,init_type, entries):
         for entry in entries:
             self._init_tag(init_type, entry.url, entry.tags)
             self._init_category(init_type, entry.url, entry.categories)
             self._init_monthly_archive(init_type, entry.url)
-        self.urls = sorted(self.entries.keys(), reverse=True)
+        _list = []
+        _pub_list = []
+        for url, entry in self.entries.items():
+            _list.append(url)
+            if not entry.private:
+                _pub_list.append(url)
+        self.urls = sorted(_pub_list, reverse=True)
+        self.all_urls = sorted(_list, reverse=True)
         self._init_params()
 
     def _init_subscribe(self):
@@ -329,6 +362,8 @@ class EntryService:
         urls = []
         for query in queries:
             for entry in self.entries.values():
+                if entry.private:
+                    continue
                 try:
                     entry.content.index(query)
                     urls.append(entry.url)
@@ -378,7 +413,7 @@ class EntryService:
             return entry.content
         return None
 
-    def archive(self, archive_type, url, start=1, limit=999999999):
+    def archive(self, archive_type, url, start=1, limit=999999999, private=False):
         self.params.error = self.models.error(url=url)
 
         if archive_type == self.types.raw:
@@ -390,7 +425,8 @@ class EntryService:
         pattern = r'\d{4}/\d{2}/\d{2}|\d{4}/\d{2}|\d{4}'
         match = re.search(pattern, archive_url)
         if match and match.group() == archive_url or archive_url == '':
-            urls = [url for url in self.urls if url.startswith(prefix)]
+            _urls = self.urls if private==False else [ e for e in self.all_urls if e not in self.urls]
+            urls = [url for url in _urls if url.startswith(prefix)]
             entries, _  =  self._find_by_page(urls, start, limit)
             count = len(entries)
         else:

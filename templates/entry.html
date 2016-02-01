@@ -9,7 +9,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="span9">
-					% include modules/entry.html entry=params.entry
+					% include modules/entry.html entry=params.entry, config=config
 					<hr>
 					% include modules/info.html entry=params.entry, config=config
 					% include modules/category.html categories=params.entry.categories, config=config
@@ -57,5 +57,6 @@
 	                });
 		})
 	</script>
+	<script src="{{ config.static_url }}/js/admin.js"></script>
 </body>
 </html>

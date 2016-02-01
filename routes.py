@@ -1,15 +1,20 @@
 # coding=utf-8
+import os
 
 from mole import route, run, static_file, error,get, post, put, delete
 from mole.template import template
 from mole import request
 from mole import response
 from mole.mole import json_dumps
+from mole import redirect
+from mole.sessions import get_current_session, authenticator
 
 import config
 from __init__ import entryService
 
 media_prefix = 'static'
+auth_required = authenticator(login_url = '/auth/login')
+
 @route('/%s/:file#.*#'%media_prefix)
 def media(file):
     return static_file(file, root='./static')
@@ -77,6 +82,7 @@ def Search():
 
 
 @route('/raw:url#.*#')
+@auth_required()
 def Raw(url):
     url = config.raw_url + url
     raw = entryService.find_raw(url)
@@ -89,18 +95,37 @@ def Raw(url):
         return template('error', params=params, config=config)
     return template('archive', params=params, config=config)
 
+@route('/private_raw:url#.*#')
+@auth_required()
+def PrivateRaw(url):
+    url = config.raw_url + url
+    raw = entryService.find_raw(url)
+    if not raw == None:
+        response.headers['Content-Type'] = 'text/plain'
+        response.headers['Content-Encoding'] = 'utf-8'
+        return raw.strip()
+    params = entryService.archive(entryService.types.raw, url, private=True)
+    if params.entries  == None:
+        return template('error', params=params, config=config)
+    return template('private', params=params, config=config)
+
 
 @route('/update:url#.*#')
+@auth_required()
 def Update(url):
     url = config.raw_url + url
     return template('update', raw_url=url)
 
+
 @route('/update_save', method='POST')
+# @auth_required()
 def UpdateSave():
+    session = get_current_session()
+    username = session.get('username','')
+    if not username:
+        return {'code': -2, 'msg': '未登录'}
+    
     raw_url = request.POST.get("raw_url",'')
-    password = request.POST.get("password",'')
-    if password!=config.admin_pwd:
-        return {'code': -1, 'msg': '密码错误'}
     content = request.POST.get("content",'').strip()
     
     entry_url = raw_url.replace(config.raw_url, config.entry_url).replace(config.raw_suffix, config.url_suffix)
@@ -112,18 +137,42 @@ def UpdateSave():
     m_file = open(entry.path, 'w')
     m_file.write('%s\n%s'%(entry.header,content) )
     m_file.close()
-    entryService.add_entry(True, entry.path)
+    entryService.add_entry(False, entry.path)
     return {'code': 0, 'msg': '更新成功'}
 
+@route('/delete_post', method='POST')
+def DeletePost():
+    session = get_current_session()
+    username = session.get('username','')
+    if not username:
+        return {'code': -2, 'msg': '未登录'}
+    
+    raw_url = request.POST.get("raw_url",'')
+    entry_url = raw_url.replace(config.raw_url, config.entry_url).replace(config.raw_suffix, config.url_suffix)
+    entry = entryService.find_by_url(entryService.types.entry, entry_url).entry
+    entryService.delete_entry(entry.path)
+    os.remove(entry.path)
+    
+    if entry.private:
+        try:
+            print 'deeeee',entry.path
+            entryService.private_list.remove(entry.path)
+        except:pass
+        entryService.save_private()
+    
+    return {'code': 0, 'msg': '删除成功'}
+
+
 @route('/publish', method='POST')
+@auth_required()
 def publish():
     name = request.POST.get("name",None)
     title = request.POST.get("title",None)
     cat = request.POST.get("cat",'')
     tag = request.POST.get("tag",'')
-    password = request.POST.get("password",'')
-    if password!=config.admin_pwd:
-        return {'code': -1, 'msg': '密码错误'}
+    private = request.POST.get("private",'')
+    print '---------',private,type(private)
+
     content = request.POST.get("content",'').strip()
     
     head = '''---
@@ -135,9 +184,46 @@ tags: [%s]
     '''%(title, cat, tag)
     import datetime
     m_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    path = './raw/entry/%s-%s.md'%(m_date, name)
+    path = 'raw/entry/%s-%s.md'%(m_date, name)
     m_file = open(path, 'w+')
     m_file.write('%s\n%s'%(head,content) )
     m_file.close()
-    entryService.add_entry(True, path)
+    if private:
+        entryService.add_entry(False, path, True)
+        entryService.update_urls()
+        entryService.private_list.append(path)
+        entryService.save_private()
+    else:
+        entryService.add_entry(True, path)
     return {'code': 0, 'msg': '发布成功'}
+
+@route('/auth/login', method=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        username = request.POST.get("username",'')
+        password = request.POST.get("password",'')
+        if password!=config.admin_pwd or username!=config.admin_user:
+            return {'code': -1, 'msg': '用户名或密码错误'}
+        else:
+            session = get_current_session()
+            session['username'] = config.admin_user
+            return {'code': 0, 'msg': 'OK'}
+    else:
+        return template('auth/login.html', config=config)
+
+@route('/auth/logout')
+def logout():
+    session = get_current_session()
+    del session['username']
+    return redirect(request.params.get('next') or '/')
+
+@route('/robots.txt')
+def robots():
+    response.headers['Content-Type'] = 'text/plain'
+    return template('robots.html', config=config)
+
+@route('/sitemap.xml')
+def sitemap():
+    params =  entryService.search(entryService.types.index, config.subscribe_url)
+    response.headers['Content-Type'] = 'text/xml'
+    return template('sitemap.html', params=params, config=config)

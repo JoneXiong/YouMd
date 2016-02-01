@@ -14,14 +14,14 @@
 		<id>{{ config.home }}{{ entry.url }}</id>
     		<published>{{ entry.time }}</published>
     		<updated>{{ entry.time }}</updated>
-    		<summary>{{! entry.excerpt }}</summary>
+    		<summary>{{ entry.excerpt }}</summary>
     		<author>
     			<name>{{ entry.author.name }}</name>
     			<uri>{{ entry.author.url }}</uri>
     		</author>
     		<content>
     		<![CDATA[
-    			{{! entry.html }}
+    			{{ entry.html }}
     		]]>
     		</content>
     	</entry>

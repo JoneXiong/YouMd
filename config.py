@@ -43,3 +43,12 @@ debug = True
 use_comment = True
 backend_md = False
 admin_pwd = '2ws1qa'
+admin_user = 'admin'
+
+def cur_user():
+    from mole.sessions import get_current_session
+    session = get_current_session()
+    return session.get('username','')
+
+private_store = 'private.data'
+private_url = 'private_raw'

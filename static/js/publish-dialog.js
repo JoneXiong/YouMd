@@ -55,8 +55,8 @@
                                         "<label>文件名</label>" +
                                         "<input type=\"text\" value=\"\" data-name />" +
                                         "<br/>" +
-                                        "<label>管理密码</label>" +
-                                        "<input type=\"password\" value=\"\" data-password />" +
+                                        "<label></label>" +
+                                        "<input id=\"private\" type=\"checkbox\" value=\"1\" data-private />私密" +
                                         "<br/>" +
                                     ( (settings.imageUpload) ? "</form>" : "</div>");
 				// dialog定义开始
@@ -79,7 +79,7 @@
                             var alt  = this.find("[data-alt]").val();
                             var link = this.find("[data-link]").val();
                             var name = this.find("[data-name]").val();
-                            var password = this.find("[data-password]").val();
+                            var private = document.getElementById("private").checked;
 
                             if (url === ""){
                                 alert('标题不能为空');
@@ -101,7 +101,7 @@
 							    	cat: alt,
 							    	tag: link,
 							    	name: name,
-							    	password: password,
+							    	private: private?'on': '',
 							    	content: cm.getValue()
 							    },  
 							    type: 'post',  
