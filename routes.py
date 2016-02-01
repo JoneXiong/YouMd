@@ -224,6 +224,6 @@ def robots():
 
 @route('/sitemap.xml')
 def sitemap():
-    params =  entryService.search(entryService.types.index, config.subscribe_url)
+    params =  entryService.search(entryService.types.index, config.subscribe_url, limit=10000)
     response.headers['Content-Type'] = 'text/xml'
     return template('sitemap.html', params=params, config=config)
