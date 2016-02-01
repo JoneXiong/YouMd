@@ -219,6 +219,7 @@ def logout():
 
 @route('/robots.txt')
 def robots():
+    response.headers['Content-Type'] = 'text/plain'
     return template('robots.html', config=config)
 
 @route('/sitemap.xml')
