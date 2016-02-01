@@ -1,0 +1,20 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>{{ config.home }}/</loc>
+	</url>
+	<url>
+		<loc>{{ config.home }}/about.html</loc>
+	</url>
+	<url>
+		<loc>{{ config.home }}/archive</loc>
+	</url>
+	<url>
+		<loc>{{ config.home }}/atom.xml</loc>
+	</url>
+	% for entry in params.entries:
+	<url>
+		<loc>{{ config.home }}{{ entry.url }}</loc>
+		<lastmod>{{ entry.time }}</lastmod>
+	</url>
+	% end
+</urlset>

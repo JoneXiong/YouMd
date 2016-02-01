@@ -220,3 +220,9 @@ def logout():
 @route('/robots.txt')
 def robots():
     return template('robots.html', config=config)
+
+@route('/sitemap.xml')
+def sitemap():
+    params =  entryService.search(entryService.types.index, config.subscribe_url)
+    response.headers['Content-Type'] = 'text/xml'
+    return template('sitemap.html', params=params, config=config)
