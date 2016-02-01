@@ -219,4 +219,4 @@ def logout():
 
 @route('/robots.txt')
 def robots():
-    return template('robots.html')
+    return template('robots.html', config=config)
