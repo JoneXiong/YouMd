@@ -113,3 +113,11 @@
 .prettyprint ol {
 	margin: 0 0 10px 0px;
 }
+
+.reference-link {
+    position: relative;
+    top: -40px;
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
