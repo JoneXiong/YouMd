@@ -108,3 +108,8 @@
     width: 14%; 
     padding: 2px 0; 
 }
+
+/* prettyprint fix */
+.prettyprint ol {
+	margin: 0 0 10px 0px;
+}
