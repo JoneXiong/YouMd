@@ -52,3 +52,6 @@ def cur_user():
 
 private_store = 'private.data'
 private_url = 'private_raw'
+
+upload_path = './upload'
+file_url = '/files'
