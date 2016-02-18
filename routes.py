@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import datetime
 
 from mole import route, run, static_file, error,get, post, put, delete
 from mole.template import template
@@ -227,3 +228,33 @@ def sitemap():
     params =  entryService.search(entryService.types.index, config.subscribe_url, limit=10000)
     response.headers['Content-Type'] = 'text/xml'
     return template('sitemap.html', params=params, config=config)
+
+
+if not os.path.exists(config.upload_path):
+    os.makedirs(config.upload_path)
+    
+@route('%s/:file#.*#'%config.file_url)
+def getfile(file):
+    return static_file(file, root=config.upload_path)
+
+@route('/upload', method='POST')
+def upload():
+    session = get_current_session()
+    username = session.get('username','')
+    if not username:
+        return {'success': 0, 'message': '请先登录', 'url':''}
+    
+    uploadfile=request.files.get('editormd-image-file')
+    
+    tnow=datetime.datetime.now()
+    parent_path = os.path.join(config.upload_path, tnow.strftime('%Y%m'))
+    if not os.path.exists(parent_path):
+        os.makedirs(parent_path)
+    
+    m_f=("000"+str(tnow.microsecond/1000))[-3:]
+    filename= tnow.strftime("%d%H%M%S")+m_f+"_" + uploadfile.filename
+    upload_path = os.path.join(parent_path, filename)
+    with open(upload_path, 'w+b') as f:
+        f.write(uploadfile.file.read())
+    url = '%s/%s/%s'%(config.file_url, tnow.strftime('%Y%m'), filename)
+    return {'success': 1, 'message': '上传成功', 'url': url}

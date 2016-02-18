@@ -7,6 +7,9 @@ from mole.mole import default_app
 from mole.sessions import SessionMiddleware
 
 version = '1.1.0'
+
+import routes
+
 app = SessionMiddleware(app=default_app(), cookie_key="457rxK3w54tkKiqkfqwfoiQS@kaJSFOo8h",no_datastore=True)
 
 if __name__  == "__main__":

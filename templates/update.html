@@ -25,6 +25,10 @@
 	                
 		            path : "/static/editormd/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
 		            
+		            imageUpload : true,
+		            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp"],
+		            imageUploadURL : "./upload",
+		            
 	                onchange : function() {
 	                	window.localStorage.setItem("youmd_content_update",this.getValue());
 	                },
