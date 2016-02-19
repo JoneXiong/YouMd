@@ -358,7 +358,7 @@ class EntryService:
         """
         #TODO: FIXME: how to search in the content of entries
         """
-        queries = [q.lower() for q  in query.split(' ')]
+        queries = [q.decode('utf-8') for q  in query.split(' ')]
         urls = []
         for query in queries:
             for entry in self.entries.values():
