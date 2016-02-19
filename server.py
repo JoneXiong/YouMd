@@ -32,7 +32,7 @@ if __name__  == "__main__":
                       type="string",
                       dest="server",
                       default='wsgiref',
-                      help="Type of  server. default=wsgiref")
+                      help="Type of server. default=wsgiref")
     (options, args) = parser.parse_args()
     
     run(app=app, host=options.host, port=options.port, server=options.server)

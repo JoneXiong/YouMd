@@ -36,8 +36,7 @@
                     action += "&callback=" + settings.uploadCallbackURL + "&dialog_id=editormd-publish-dialog-" + guid;
                 }
 
-                var dialogContent = ( (settings.imageUpload) ? "<form action=\"" + action +"\" target=\"" + iframeName + "\" method=\"post\" enctype=\"multipart/form-data\" class=\"" + classPrefix + "form\">" : "<div class=\"" + classPrefix + "form\">" ) +
-                                        ( (settings.imageUpload) ? "<iframe name=\"" + iframeName + "\" id=\"" + iframeName + "\" guid=\"" + guid + "\"></iframe>" : "" ) +
+                var dialogContent = ("<div class=\"" + classPrefix + "form\">" ) +
                                         "<label>标题</label>" +
                                         "<input type=\"text\" data-url />" + (function(){
                                             return (settings.imageUpload) ? "<div class=\"" + classPrefix + "file-input\">" +
@@ -58,7 +57,7 @@
                                         "<label></label>" +
                                         "<input id=\"private\" type=\"checkbox\" value=\"1\" data-private />私密" +
                                         "<br/>" +
-                                    ( (settings.imageUpload) ? "</form>" : "</div>");
+                                    ("</div>");
 				// dialog定义开始
                 dialog = this.createDialog({
                     title      : '发布',
