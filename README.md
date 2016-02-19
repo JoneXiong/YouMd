@@ -15,6 +15,8 @@ python server.py
 
 编辑器 http://localhost:8081/new
 
+在线示例 [www.oejia.net](http://www.oejia.net/)
+
 
 # 说明
 发布保存的文档默认以.md存放在raw/entry/目录下
