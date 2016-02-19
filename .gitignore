@@ -63,3 +63,5 @@ raw/
 .settings
 .project
 .pydevproject
+
+upload/
