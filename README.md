@@ -15,6 +15,8 @@ python server.py
 
 编辑器 http://localhost:8081/new
 
+在线示例 [www.oejia.net](http://www.oejia.net/)
+
 
 # 说明
 发布保存的文档默认以.md存放在raw/entry/目录下
@@ -61,3 +63,10 @@ Screenshots
 - 增加robots、sitemap等，方便搜索引擎收录
 - 其他问题修复修复与优化
 
+### v1.2.0
+
+- 增加服务运行参数解析
+- 图片上传与插入的支持
+- 代码区显示优化
+- 修复TOC锚点链接偏移问题
+- 修复中文搜索不出的问题
