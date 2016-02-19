@@ -27,6 +27,12 @@ if __name__  == "__main__":
                       dest="host",
                       default='0.0.0.0',
                       help="Server host address. default=0.0.0.0")
+    parser.add_option("-s", "--server",
+                      action="store",
+                      type="string",
+                      dest="server",
+                      default='wsgiref',
+                      help="Type of  server. default=wsgiref")
     (options, args) = parser.parse_args()
     
-    run(app=app, host=options.host, port=options.port)
+    run(app=app, host=options.host, port=options.port, server=options.server)
