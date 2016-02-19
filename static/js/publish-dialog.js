@@ -29,20 +29,11 @@
             if (editor.find("." + dialogName).length < 1)
             {
                 var guid   = (new Date).getTime();
-                var action = settings.imageUploadURL + (settings.imageUploadURL.indexOf("?") >= 0 ? "&" : "?") + "guid=" + guid;
-
-                if (settings.crossDomainUpload)
-                {
-                    action += "&callback=" + settings.uploadCallbackURL + "&dialog_id=editormd-publish-dialog-" + guid;
-                }
 
                 var dialogContent = ("<div class=\"" + classPrefix + "form\">" ) +
                                         "<label>标题</label>" +
                                         "<input type=\"text\" data-url />" + (function(){
-                                            return (settings.imageUpload) ? "<div class=\"" + classPrefix + "file-input\">" +
-                                                                                "<input type=\"file\" name=\"" + classPrefix + "image-file\" accept=\"image/*\" />" +
-                                                                                "<input type=\"submit\" value=\"" + imageLang.uploadButton + "\" />" +
-                                                                            "</div>" : "";
+                                            return "";
                                         })() +
                                         "<br/>" +
                                         "<label>分类</label>" +
