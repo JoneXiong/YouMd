@@ -51,7 +51,7 @@ def cur_user():
     return session.get('username','')
 
 private_store = 'private.data'
-private_url = 'private_raw'
+private_url = '/private_raw'
 
 upload_path = './upload'
 file_url = '/files'

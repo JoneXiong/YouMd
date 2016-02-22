@@ -45,7 +45,7 @@ class EntryService:
             with open(private_path, 'r') as _file:
                 private_list = pickle.load(_file)
         self.private_list = private_list
-        print 'dddd',self.private_list
+        print 'private list',self.private_list
         for root, _, files in os.walk(config.entry_dir):
             for f in files:
                 _path = root + '/' + f
