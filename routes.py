@@ -138,7 +138,7 @@ def UpdateSave():
     m_file = open(entry.path, 'w')
     m_file.write('%s\n%s'%(entry.header,content) )
     m_file.close()
-    entryService.add_entry(False, entry.path)
+    entryService.add_entry(False, entry.path, entry.private)
     return {'code': 0, 'msg': '更新成功'}
 
 @route('/delete_post', method='POST')
