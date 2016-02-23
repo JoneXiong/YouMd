@@ -2,10 +2,12 @@
 <html lang="zh_CN">
 <head>
 	<link rel="stylesheet" href="/static/editormd/css/editormd.min.css" />
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
 	
 	<script src="/static/js/jquery.min.js"></script>
 	<script src="/static/editormd/editormd.min.js"></script>
 	<script src="/static/js/publish-dialog.js"></script>
+	<script src="/static/js/jquery.bootstrap-growl.min.js"></script>
 	<script type="text/javascript">
 	    $(function() {
 	    	var loadicon = true;
@@ -60,7 +62,7 @@
 							    type: 'post',  
 							    success: function(data) {  
 							        if(data.code ==0 ){  
-							            alert("成功！");  
+							        $.bootstrapGrowl("文档已保存！", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
 							        }else if(data.code ==-2){
 							        	//href = '/auth/login?next='+window.location.pathname;
 							        	href = '/auth/login?pop=1';
@@ -69,7 +71,7 @@
 							        }  
 							     },  
 							     error : function() {  
-							          alert("服务器异常！请稍后重试");  
+							        $.bootstrapGrowl("文服务器异常！请稍后重试", { type: 'danger',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
 							     }
 							});
 			        	},
