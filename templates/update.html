@@ -2,10 +2,12 @@
 <html lang="zh_CN">
 <head>
 	<link rel="stylesheet" href="/static/editormd/css/editormd.min.css" />
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
 	
 	<script src="/static/js/jquery.min.js"></script>
 	<script src="/static/editormd/editormd.min.js"></script>
 	<script src="/static/js/publish-dialog.js"></script>
+	<script src="/static/js/jquery.bootstrap-growl.min.js"></script>
 	<script type="text/javascript">
 	    $(function() {
 	    	var loadicon = true;
@@ -34,17 +36,19 @@
 	                },
 	                toolbarIcons : function() {
 	                	if (loadicon){
-	                		window.editormd.toolbarModes.full.push("||", "update");
+	                		window.editormd.toolbarModes.full.push("|", "load_last", "||", "update");
 	                		loadicon = false;
 	                		}
 	                	return window.editormd.toolbarModes.full;
 	                },
 			        toolbarIconTexts : {
-			            update : "保存"
+			            update : "保存",
+			            load_last : "加载上次",
 			        },
 			        lang : {
 			            toolbar : {
 			                update : "更新到博客服务端存储",
+			                load_last : "加载最后一次编辑的内容",
 			            }
 			        },
 			        toolbarHandlers : {
@@ -58,7 +62,7 @@
 							    type: 'post',  
 							    success: function(data) {  
 							        if(data.code ==0 ){  
-							            alert("成功！");  
+							        $.bootstrapGrowl("文档已保存！", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
 							        }else if(data.code ==-2){
 							        	//href = '/auth/login?next='+window.location.pathname;
 							        	href = '/auth/login?pop=1';
@@ -67,9 +71,12 @@
 							        }  
 							     },  
 							     error : function() {  
-							          alert("服务器异常！请稍后重试");  
+							        $.bootstrapGrowl("文服务器异常！请稍后重试", { type: 'danger',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
 							     }
 							});
+			        	},
+			        	load_last: function(cm, icon, cursor, selection) {
+			        		this.setValue(window.localStorage.getItem('youmd_content_update'));
 			        	}
 			        }
 	
