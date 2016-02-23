@@ -19,6 +19,7 @@ python server.py
 
 
 # 说明
+使用说明参考文档: [使用说明](http://www.oejia.net/blog/2016/02/23/youmd_base_use.html)
 发布保存的文档默认以.md存放在raw/entry/目录下
 
 可配置的地方如下：
