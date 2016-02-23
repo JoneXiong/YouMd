@@ -34,17 +34,19 @@
 	                },
 	                toolbarIcons : function() {
 	                	if (loadicon){
-	                		window.editormd.toolbarModes.full.push("||", "update");
+	                		window.editormd.toolbarModes.full.push("|", "load_last", "||", "update");
 	                		loadicon = false;
 	                		}
 	                	return window.editormd.toolbarModes.full;
 	                },
 			        toolbarIconTexts : {
-			            update : "保存"
+			            update : "保存",
+			            load_last : "加载上次",
 			        },
 			        lang : {
 			            toolbar : {
 			                update : "更新到博客服务端存储",
+			                load_last : "加载最后一次编辑的内容",
 			            }
 			        },
 			        toolbarHandlers : {
@@ -70,6 +72,9 @@
 							          alert("服务器异常！请稍后重试");  
 							     }
 							});
+			        	},
+			        	load_last: function(cm, icon, cursor, selection) {
+			        		this.setValue(window.localStorage.getItem('youmd_content_update'));
 			        	}
 			        }
 	
