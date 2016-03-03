@@ -102,7 +102,12 @@
 										    window.location.href = '/';
 										}else{ }
 							            publish_success();
-							        }else{  
+							        }else if(data.code ==-2){
+							        	href = '/auth/login?pop=1';
+							            var win = window.open(href, 'login_window', 'height=450,width=780,resizable=yes,scrollbars=yes');
+							            win.focus();
+							        }
+							        else{  
 							            alert(data.msg);  
 							        }  
 							     },  

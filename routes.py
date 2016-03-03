@@ -165,8 +165,13 @@ def DeletePost():
 
 
 @route('/publish', method='POST')
-@auth_required()
+#@auth_required()
 def publish():
+    session = get_current_session()
+    username = session.get('username','')
+    if not username:
+        return {'code': -2, 'msg': '未登录'}
+    
     name = request.POST.get("name",None)
     title = request.POST.get("title",None)
     cat = request.POST.get("cat",'')
