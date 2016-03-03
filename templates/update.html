@@ -29,7 +29,7 @@
 		            
 		            imageUpload : true,
 		            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp"],
-		            imageUploadURL : "./upload",
+		            imageUploadURL : "/upload",
 		            
 	                onchange : function() {
 	                	window.localStorage.setItem("youmd_content_update",this.getValue());
@@ -71,7 +71,7 @@
 							        }  
 							     },  
 							     error : function() {  
-							        $.bootstrapGrowl("文服务器异常！请稍后重试", { type: 'danger',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
+							        $.bootstrapGrowl("文服务器异常！请稍后重试", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
 							     }
 							});
 			        	},
