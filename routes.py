@@ -39,6 +39,8 @@ def Entry(url):
         if params.entry == None:
             return template('error', params=params, config=config)
         else:
+            if params.entry.private:
+                return template('error', params=params, config=config)
             return template('entry', params=params, config=config)
     params = entryService.search(entryService.types.index, url)
     return template('index', params=params, config=config)
