@@ -207,12 +207,12 @@ def login():
     if request.method == 'POST':
         username = request.POST.get("username",'')
         password = request.POST.get("password",'')
-        if password!=config.admin_pwd or username!=config.admin_user:
-            return {'code': -1, 'msg': '用户名或密码错误'}
-        else:
+        if password==config.admin_pwd and (username==config.admin_user or username in config.multi_user):
             session = get_current_session()
             session['username'] = config.admin_user
             return {'code': 0, 'msg': 'OK'}
+        else:
+            return {'code': -1, 'msg': '用户名或密码错误'}
     else:
         return template('auth/login.html', config=config)
 

@@ -44,6 +44,7 @@ use_comment = False
 backend_md = False
 admin_pwd = 'youmd'
 admin_user = 'admin'
+multi_user = [ ]
 
 def cur_user():
     from mole.sessions import get_current_session
