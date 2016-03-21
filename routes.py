@@ -157,11 +157,7 @@ def DeletePost():
     os.remove(entry.path)
     
     if entry.private:
-        try:
-            print 'deeeee',entry.path
-            entryService.private_list.remove(entry.path)
-        except:pass
-        entryService.save_private()
+        entryService.del_private(entry.path)
     
     return {'code': 0, 'msg': '删除成功'}
 
@@ -199,8 +195,7 @@ tags: [%s]
     if private:
         entryService.add_entry(False, path, True)
         entryService.update_urls()
-        entryService.private_list.append(path)
-        entryService.save_private()
+        entryService.add_private(path)
     else:
         entryService.add_entry(True, path)
     return {'code': 0, 'msg': '发布成功'}

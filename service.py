@@ -32,6 +32,17 @@ class EntryService:
         self.all_urls = []
         self._init_entries()
         
+    def add_private(self, path):
+        self.private_list.append(path)
+        self.save_private()
+        
+    def del_private(self, path):
+        self.private_list.append(path)
+        try:
+            self.private_list.remove(path)
+        except:pass
+        self.save_private()
+        
     def save_private(self):
         private_path = 'raw/' + config.private_store
         with open(private_path, "w") as _file:
@@ -76,6 +87,9 @@ class EntryService:
             self.pages[page.url] = page
 
     def _init_entry(self, entry_type, path, private=False):
+        '''
+        read infomation from md file
+        '''
         url, raw_url, name, date, time, content =  self._init_file(path, entry_type)
         if not url == None:
             entry = self.models.entry(entry_type)
@@ -96,6 +110,7 @@ class EntryService:
                     title_raw = f.readline()
                     category_raw = f.readline()
                     tags_raw = f.readline()
+                    #author_raw = f.readline()
                     end = f.readline()
                     content = f.read().strip()
                     #print layout_raw,title_raw,category_raw,tags_raw
@@ -173,9 +188,17 @@ class EntryService:
         return url, raw_url, name, date, time, content
     
     def update_urls(self):
+        '''
+        public url noupdate
+        '''
         self.all_urls = sorted(self.entries.keys(), reverse=True)
 
     def _init_miscellaneous(self,init_type, entries):
+        '''
+        1. rebuild index data of the 'entries'
+        2. refresh the url data
+        3. refresh the right part of site page
+        '''
         for entry in entries:
             self._init_tag(init_type, entry.url, entry.tags)
             self._init_category(init_type, entry.url, entry.categories)
@@ -191,6 +214,9 @@ class EntryService:
         self._init_params()
 
     def _init_subscribe(self):
+        '''
+        refresh the subscribe last update time
+        '''
         time = None
         if self.urls == []:
             time = datetime.datetime.now().strftime(config.time_fmt)
@@ -258,6 +284,9 @@ class EntryService:
                     self.by_months.pop(month)
 
     def _init_params(self):
+        '''
+        refresh the right part of site page
+        '''
         self.params.subscribe = self._init_subscribe()
         self.params.primary.tags = self._init_tags_widget()
         self.params.primary.recently_entries = self._init_recently_entries_widget()
