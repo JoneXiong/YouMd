@@ -34,8 +34,8 @@ class EntryService:
         self._init_entries()
         
     def get_tag_url(self, tag):
-        url = '/search?type=tag&value=%s&start=1&limit=5'%tag
-        return urllib.quote(url)
+        url = '/search?type=tag&value=%s&start=1&limit=5'%urllib.quote(tag)
+        return url
         
     def add_private(self, path):
         self.private_list.append(path)
@@ -352,7 +352,7 @@ class EntryService:
         #TODO: FIXME: calculate tags' rank
         """
         tags = sorted(self.by_tags.values(), key=lambda v:v.count, reverse=True)
-        tags = [t for t in tags if not t.startswith('__')]
+        tags = [t for t in tags if not t.name.startswith('__')]
         ranks = config.ranks
         div, mod = divmod(len(tags), ranks)
         if div == 0:
