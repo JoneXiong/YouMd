@@ -8,7 +8,8 @@ import random
 try:  
     import cPickle as pickle  
 except ImportError:  
-    import pickle  
+    import pickle
+import urllib
 
 import config
 from model import Models
@@ -31,6 +32,10 @@ class EntryService:
         self.private_list = []
         self.all_urls = []
         self._init_entries()
+        
+    def get_tag_url(self, tag):
+        url = '/search?type=tag&value=%s&start=1&limit=5'%tag
+        return urllib.quote(url)
         
     def add_private(self, path):
         self.private_list.append(path)
@@ -139,6 +144,11 @@ class EntryService:
             entry.excerpt = content[:200] + ' ... ...'
             entry.categories = categories
             entry.tags = tags
+            if len(tags)>0:
+                first_tag = tags[0]
+                if first_tag.startswith('__'):
+                    entry.author.name = first_tag[2:]
+                    entry.author.url = self.get_tag_url(first_tag)
             return entry
         return None
 
@@ -342,6 +352,7 @@ class EntryService:
         #TODO: FIXME: calculate tags' rank
         """
         tags = sorted(self.by_tags.values(), key=lambda v:v.count, reverse=True)
+        tags = [t for t in tags if not t.startswith('__')]
         ranks = config.ranks
         div, mod = divmod(len(tags), ranks)
         if div == 0:

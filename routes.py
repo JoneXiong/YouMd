@@ -179,6 +179,8 @@ def publish():
 
     content = request.POST.get("content",'').strip()
     
+    tag = '__%s,%s'%(username, tag) if tag else username
+    
     head = '''---
 layout: post
 title: %s
