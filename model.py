@@ -87,10 +87,11 @@ class Models:
         reference:
             template/search.html
         """
+        value_show = value[2:] if value.startswith('__') else value
         model = {
             'type':search_type,
             'value':value,
-            'title': '"' + value + '" 相关的信息如下，共 ' + str(total) + '条'
+            'title': '"' + value_show + '" 相关的信息如下，共 ' + str(total) + '条'
             #'title':str(total)+ ' ' + self.plurals('result', total) + ' matching "' + value + '" of ' + search_type
         }
         return  Dict2Object(model)

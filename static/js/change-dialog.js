@@ -3,9 +3,9 @@
 
     var factory = function (exports) {
 
-		var pluginName   = "publish-dialog";
+		var pluginName   = "change-dialog";
 
-		exports.fn.publishDialog = function() {
+		exports.fn.changeDialog = function(raw_url, init) {
 
             var _this       = this;
             var cm          = this.cm;
@@ -14,10 +14,9 @@
             var settings    = this.settings;
             var cursor      = cm.getCursor();
             var selection   = cm.getSelection();
-            var imageLang   = lang.dialog.image;
             var classPrefix = this.classPrefix;
-            var iframeName  = classPrefix + "image-iframe";
 			var dialogName  = classPrefix + pluginName, dialog;
+			var raw_url = raw_url;
 
 			cm.focus();
 
@@ -32,28 +31,25 @@
 
                 var dialogContent = ("<div class=\"" + classPrefix + "form\">" ) +
                                         "<label>标题</label>" +
-                                        "<input type=\"text\" data-url />" + (function(){
+                                        "<input type=\"text\" style=\"height: 33px\" data-title />" + (function(){
                                             return "";
                                         })() +
                                         "<br/>" +
                                         "<label>分类</label>" +
-                                        "<input type=\"text\" value=\"" + selection + "\" data-alt />" +
+                                        "<input type=\"text\" style=\"height: 33px\" value=\"" + selection + "\" data-cat />" +
                                         "<br/>" +
                                         "<label>标签</label>" +
-                                        "<input type=\"text\" value=\"\" data-link />" +
-                                        "<br/>" +
-                                        "<label>文件名</label>" +
-                                        "<input type=\"text\" value=\"\" data-name />" +
+                                        "<input type=\"text\" style=\"height: 33px\" value=\"\" data-tag />" +
                                         "<br/>" +
                                         "<label></label>" +
-                                        "<input id=\"private\" type=\"checkbox\" value=\"1\" data-private />私密" +
+                                        "<input id=\"private\" type=\"checkbox\" value=\"1\" data-private /> 私密" +
                                         "<br/>" +
                                     ("</div>");
 				// dialog定义开始
                 dialog = this.createDialog({
                     title      : '发布',
                     width      : 380,
-                    height     : 330,
+                    height     : 300,
                     name       : dialogName,
                     content    : dialogContent,
                     mask       : settings.dialogShowMask,
@@ -64,44 +60,35 @@
                         backgroundColor : settings.dialogMaskBgColor
                     },
                     buttons : {
-                        enter : ['确定发布', function() {
-                            var url  = this.find("[data-url]").val();
-                            var alt  = this.find("[data-alt]").val();
-                            var link = this.find("[data-link]").val();
-                            var name = this.find("[data-name]").val();
+                        enter : ['保存', function() {
+                            var title  = this.find("[data-title]").val();
+                            var cat  = this.find("[data-cat]").val();
+                            var tag = this.find("[data-tag]").val();
                             var private = document.getElementById("private").checked;
 
-                            if (url === ""){
+                            if (title === ""){
                                 alert('标题不能为空');
                                 return false;
                             }
-                            if (name === ""){
-                                alert('保存的文件名不能为空');
-                                return false;
-                            }
                             var dia = this;
-		                    function publish_success(){
+		                    function change_success(){
 			                    dia.hide().lockScreen(false).hideMask();
-			                    //cm.setValue('');
 		                    }
 							$.ajax( {  
-							    url: '/publish',
+							    url: '/save_head',
 							    data:{
-							    	title: url,
-							    	cat: alt,
-							    	tag: link,
-							    	name: name,
+							    	raw_url: raw_url,
+							    	title: title,
+							    	cat: cat,
+							    	tag: tag,
 							    	private: private?'on': '',
 							    	content: cm.getValue()
 							    },  
 							    type: 'post',  
 							    success: function(data) {  
-							        if(data.code ==0 ){  
-										var msg = "发布成功！\n\n是否去首页查看？"; 
-										if (confirm(msg)==true){ 
-										    window.location.href = '/';
-										}else{ }
-							            publish_success();
+							        if(data.code ==0 ){
+							        	$.bootstrapGrowl("修改成功！", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
+							            change_success();
 							        }else if(data.code ==-2){
 							        	href = '/auth/login?pop=1';
 							            var win = window.open(href, 'login_window', 'height=450,width=780,resizable=yes,scrollbars=yes');
@@ -124,13 +111,14 @@
                     }
                 });
 				// dialog定义结束
-                dialog.attr("id", classPrefix + "publish-dialog-" + guid);
+                dialog.attr("id", classPrefix + "change-dialog-" + guid);
             }
 
 			dialog = editor.find("." + dialogName);
-			dialog.find("[type=\"text\"]").val("");
-			dialog.find("[type=\"file\"]").val("");
-			dialog.find("[data-link]").val("");
+			dialog.find("[data-title]").val(init.title);
+			dialog.find("[data-cat]").val(init.cat);
+			dialog.find("[data-tag]").val(init.tag);
+			document.getElementById("private").checked = init.private;
 
 			this.dialogShowMask(dialog);
 			this.dialogLockScreen();

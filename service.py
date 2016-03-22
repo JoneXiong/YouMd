@@ -8,7 +8,8 @@ import random
 try:  
     import cPickle as pickle  
 except ImportError:  
-    import pickle  
+    import pickle
+import urllib
 
 import config
 from model import Models
@@ -31,6 +32,21 @@ class EntryService:
         self.private_list = []
         self.all_urls = []
         self._init_entries()
+        
+    def get_tag_url(self, tag):
+        url = '/search?type=tag&value=%s&start=1&limit=5'%urllib.quote(tag)
+        return url
+        
+    def add_private(self, path):
+        self.private_list.append(path)
+        self.save_private()
+        
+    def del_private(self, path):
+        self.private_list.append(path)
+        try:
+            self.private_list.remove(path)
+        except:pass
+        self.save_private()
         
     def save_private(self):
         private_path = 'raw/' + config.private_store
@@ -60,9 +76,52 @@ class EntryService:
         if not entry == None:
             self.entries[entry.url] = entry
             if inotified:
-                self._init_miscellaneous(self.types.add, [entry])
+                if private:
+                    self.update_urls()
+                    self.add_private(path)
+                else:
+                    self._init_miscellaneous(self.types.add, [entry])
             else:
                 self.update_urls()
+                
+    def update_entry(self, entry, data):
+        tar = self.entries[entry.url]
+        if 'title' in data:
+            tar.name = data.get('title')
+            #entry.name = data.get('title')
+        old_private = entry.private
+        new_private = bool(data.get('private', ''))
+        changed = False
+        
+        if 'tags' in data:
+            old_tags = entry.tags
+            new_tags = data.get('tags')
+            if not old_private:
+                self._init_tag(self.types.delete, entry.url, old_tags)
+            if not new_private:
+                self._init_tag(self.types.add, entry.url, new_tags)
+            tar.tags = new_tags
+            if old_tags!=new_tags:changed=True
+        if 'cats' in data:
+            old_cats = entry.categories
+            new_cats = data.get('cats')
+            if not old_private:
+                self._init_category(self.types.delete, entry.url, old_cats)
+            if not new_private:
+                self._init_category(self.types.add, entry.url, new_cats)
+            tar.categories = new_cats
+            if old_cats!=new_cats:changed = True
+        tar.private = new_private
+        if old_private!=new_private:
+            self.update_urls()
+            if new_private:
+                self.add_private(entry.path)
+            else:
+                self.del_private(entry.path)
+            changed = True
+        
+        if changed:
+            self._init_params()
 
     def delete_entry(self, path):
         for entry in self.entries.values():
@@ -76,6 +135,9 @@ class EntryService:
             self.pages[page.url] = page
 
     def _init_entry(self, entry_type, path, private=False):
+        '''
+        read infomation from md file
+        '''
         url, raw_url, name, date, time, content =  self._init_file(path, entry_type)
         if not url == None:
             entry = self.models.entry(entry_type)
@@ -96,6 +158,7 @@ class EntryService:
                     title_raw = f.readline()
                     category_raw = f.readline()
                     tags_raw = f.readline()
+                    #author_raw = f.readline()
                     end = f.readline()
                     content = f.read().strip()
                     #print layout_raw,title_raw,category_raw,tags_raw
@@ -124,6 +187,11 @@ class EntryService:
             entry.excerpt = content[:200] + ' ... ...'
             entry.categories = categories
             entry.tags = tags
+            if len(tags)>0:
+                first_tag = tags[0]
+                if first_tag.startswith('__'):
+                    entry.author.name = first_tag[2:]
+                    entry.author.url = self.get_tag_url(first_tag)
             return entry
         return None
 
@@ -173,13 +241,9 @@ class EntryService:
         return url, raw_url, name, date, time, content
     
     def update_urls(self):
-        self.all_urls = sorted(self.entries.keys(), reverse=True)
-
-    def _init_miscellaneous(self,init_type, entries):
-        for entry in entries:
-            self._init_tag(init_type, entry.url, entry.tags)
-            self._init_category(init_type, entry.url, entry.categories)
-            self._init_monthly_archive(init_type, entry.url)
+        '''
+        public url noupdate
+        '''
         _list = []
         _pub_list = []
         for url, entry in self.entries.items():
@@ -188,9 +252,24 @@ class EntryService:
                 _pub_list.append(url)
         self.urls = sorted(_pub_list, reverse=True)
         self.all_urls = sorted(_list, reverse=True)
+
+    def _init_miscellaneous(self,init_type, entries):
+        '''
+        1. rebuild index data of the 'entries'
+        2. refresh the url data
+        3. refresh the right part of site page
+        '''
+        for entry in entries:
+            self._init_tag(init_type, entry.url, entry.tags)
+            self._init_category(init_type, entry.url, entry.categories)
+            self._init_monthly_archive(init_type, entry.url)
+        self.update_urls()
         self._init_params()
 
     def _init_subscribe(self):
+        '''
+        refresh the subscribe last update time
+        '''
         time = None
         if self.urls == []:
             time = datetime.datetime.now().strftime(config.time_fmt)
@@ -258,6 +337,9 @@ class EntryService:
                     self.by_months.pop(month)
 
     def _init_params(self):
+        '''
+        refresh the right part of site page
+        '''
         self.params.subscribe = self._init_subscribe()
         self.params.primary.tags = self._init_tags_widget()
         self.params.primary.recently_entries = self._init_recently_entries_widget()
@@ -313,6 +395,7 @@ class EntryService:
         #TODO: FIXME: calculate tags' rank
         """
         tags = sorted(self.by_tags.values(), key=lambda v:v.count, reverse=True)
+        tags = [t for t in tags if not t.name.startswith('__')]
         ranks = config.ranks
         div, mod = divmod(len(tags), ranks)
         if div == 0:
