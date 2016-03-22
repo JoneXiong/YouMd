@@ -98,6 +98,77 @@ def Raw(url):
         return template('error', params=params, config=config)
     return template('archive', params=params, config=config)
 
+@route('/get_head', method='POST')
+def GetHead():
+    session = get_current_session()
+    username = session.get('username','')
+    if not username:
+        return {'code': -2, 'msg': '未登录'}
+    
+    raw_url = request.POST.get("raw_url",'')
+    url = raw_url.replace(config.raw_url, '').replace(config.raw_suffix, config.url_suffix)
+    url = config.entry_url + url
+    params = entryService.find_by_url(entryService.types.entry, url)
+    entry = params.entry
+    if entry:
+        tags = [e for e in entry.tags if not e.startswith('__')]
+        data = {
+               'title': entry.name,
+               'cat': entry.categories and ','.join(entry.categories) or '',
+               'tag': tags and ','.join(tags) or '',
+               'private': entry.private
+               }
+        ret = {'code': 0, 'msg': 'ok', 'data': data}
+    else:
+        ret = {'code': -1, 'msg': 'can not find'}
+    return ret
+
+@route('/save_head', method='POST')
+def SaveHead():
+    session = get_current_session()
+    username = session.get('username','')
+    if not username:
+        return {'code': -2, 'msg': '未登录'}
+    
+    title = request.POST.get("title", '').strip()
+    cat = request.POST.get("cat",'').strip().replace('，', ',')
+    tag = request.POST.get("tag",'').strip().replace('，', ',')
+    private = request.POST.get("private",'')
+    content = request.POST.get("content",'').strip()
+    raw_url = request.POST.get("raw_url",'')
+    
+    if not title:
+        return {'code': -3, 'msg': '请填写完整'}
+    
+    url = raw_url.replace(config.raw_url, '').replace(config.raw_suffix, config.url_suffix)
+    url = config.entry_url + url
+    params = entryService.find_by_url(entryService.types.entry, url)
+    entry = params.entry
+    if not entry:
+        return {'code': -4, 'msg': '对象不存在'}
+    
+    tag = '__%s,%s'%(username, tag) if tag else '__'+username
+    
+    head = '''---
+layout: post
+title: %s
+category: %s
+tags: [%s]
+---
+    '''%(title, cat, tag)
+
+    m_file = open(entry.path, 'w+')
+    m_file.write('%s\n%s'%(head,content) )
+    m_file.close()
+    
+    entryService.update_entry(entry, {
+                                      'title': title,
+                                      'tags': tag and tag.split(',') or [],
+                                      'cats': cat and cat.split(',') or [],
+                                      'private': bool(private)
+                                      })
+    return {'code': 0, 'msg': '修改成功'}
+
 @route('/private_raw:url#.*#')
 @auth_required()
 def PrivateRaw(url):
@@ -170,16 +241,17 @@ def publish():
     if not username:
         return {'code': -2, 'msg': '未登录'}
     
-    name = request.POST.get("name",None)
-    title = request.POST.get("title",None)
-    cat = request.POST.get("cat",'')
-    tag = request.POST.get("tag",'')
-    private = request.POST.get("private",'')
-    print '---------',private,type(private)
-
+    name = request.POST.get("name", '').strip()
+    title = request.POST.get("title", '').strip()
+    cat = request.POST.get("cat",'').strip().replace('，', ',')
+    tag = request.POST.get("tag",'').strip().replace('，', ',')
+    private = request.POST.get("private",'') # '' or 'on'
     content = request.POST.get("content",'').strip()
     
-    tag = '__%s,%s'%(username, tag) if tag else username
+    if not (name and title):
+        return {'code': -3, 'msg': '请填写完整'}
+    
+    tag = '__%s,%s'%(username, tag) if tag else '__'+username
     
     head = '''---
 layout: post
@@ -188,18 +260,13 @@ category: %s
 tags: [%s]
 ---
     '''%(title, cat, tag)
-    import datetime
     m_date = datetime.datetime.now().strftime('%Y-%m-%d')
     path = 'raw/entry/%s-%s.md'%(m_date, name)
     m_file = open(path, 'w+')
     m_file.write('%s\n%s'%(head,content) )
     m_file.close()
-    if private:
-        entryService.add_entry(False, path, True)
-        entryService.update_urls()
-        entryService.add_private(path)
-    else:
-        entryService.add_entry(True, path)
+    
+    entryService.add_entry(True, path, True if private else False)
     return {'code': 0, 'msg': '发布成功'}
 
 @route('/auth/login', method=['GET','POST'])
