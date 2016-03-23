@@ -2,13 +2,13 @@
 import gettext
 
 locale_path = './locale/'
-# gettext.install('internation', locale_path) # 这条语句会将_()函数自动放到python的内置命名空间中
 zh_trans = gettext.translation('lang', locale_path, languages=['cn'])
 en_trans = gettext.translation('lang', locale_path, languages=['en'])
 zh_trans.install()
-# name = 'webname'  # 网站名称
+
+name = 'MarkDown Doc'
 home = 'https://github.com/JoneXiong/YouMd'
-# author = 'author'  # 创建者
+author = 'YouMd'
 disqus = '"webpymdblog=="'
 template_dir = 'template'
 entry_dir = 'raw/entry'
