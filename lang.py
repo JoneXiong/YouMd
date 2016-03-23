@@ -23,7 +23,7 @@ def GetFileFromThisRootDir(dir, ext=None):
 
 poFiles = GetFileFromThisRootDir("lang", "po")
 for pofile in poFiles:
-    os.system(i18n + " " + pofile)
+    os.system("python " + i18n + " " + pofile)
 # 移动所有mo到对应语言的目录
 files = GetFileFromThisRootDir("lang", "mo")
 startIndex = len(r"lang\lang_")
