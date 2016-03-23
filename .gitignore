@@ -61,3 +61,4 @@ target/
 .pydevproject
 
 upload/
+.idea
