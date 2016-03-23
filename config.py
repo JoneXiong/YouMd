@@ -1,8 +1,14 @@
 # coding=utf-8
+import gettext
 
-name = u'MarkDown Doc'
+locale_path = './locale/'
+# gettext.install('internation', locale_path) # 这条语句会将_()函数自动放到python的内置命名空间中
+zh_trans = gettext.translation('lang', locale_path, languages=['cn'])
+en_trans = gettext.translation('lang', locale_path, languages=['en'])
+zh_trans.install()
+# name = 'webname'  # 网站名称
 home = 'https://github.com/JoneXiong/YouMd'
-author = 'YouMd'
+# author = 'author'  # 创建者
 disqus = '"webpymdblog=="'
 template_dir = 'template'
 entry_dir = 'raw/entry'
@@ -29,7 +35,7 @@ other_url = '(.+)'
 start = 1
 limit = 5
 pagination = 15
-search_holder = 'search all site'
+search_holder = 'search_holder'
 time_fmt = '%Y-%m-%d %H:%M:%S'
 date_fmt = '%Y-%m-%d'
 url_fmt = 'yyyy/mm/dd'
@@ -39,17 +45,18 @@ ranks = 10
 subscribe = 10
 cache = False
 debug = True
-
 use_comment = False
 backend_md = False
-admin_pwd = 'youmd'
+admin_pwd = 'admin'
 admin_user = 'admin'
-multi_user = [ ]
+multi_user = []
+
 
 def cur_user():
     from mole.sessions import get_current_session
     session = get_current_session()
-    return session.get('username','')
+    return session.get('username', '')
+
 
 private_store = 'private.data'
 private_url = '/private_raw'
