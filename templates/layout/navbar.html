@@ -1,4 +1,4 @@
-﻿<!-- config -->
+﻿﻿<!-- config -->
 <div id="header">
     <div class="navbar navbar-inverse navbar-fixed-top">
     	<div class="navbar-inner">
@@ -6,30 +6,30 @@
     			<a class="btn btn-navbar" data-toggle="collapse"
     				data-target=".nav-collapse"> <span class="icon-bar"></span> <span
     				class="icon-bar"></span> <span class="icon-bar"></span>
-    			</a><a class="brand" href="/">{{ config.name }}</a>
+    			</a><a class="brand" href="/">{{ _("webname") }}</a>
     			<div class="nav-collapse collapse">
     				<ul class="nav">
-    					<li><a href="/"><i class="icon-home icon-white"></i> 主页</a></li>
-    					<li><a href="{{ config.archive_url }}"><i class="icon-book icon-white"></i> 索引</a></li>
-    					<li><a href="{{ config.about_url }}"><i class="icon-user icon-white"></i> 关于</a></li>
+    					<li><a href="/"><i class="icon-home icon-white"></i> {{ _("index_home") }}</a></li>
+    					<li><a href="{{ config.archive_url }}"><i class="icon-book icon-white"></i> {{ _("index_index") }}</a></li>
+    					<li><a href="{{ config.about_url }}"><i class="icon-user icon-white"></i> {{_("index_about")}}</a></li>
     					% if config.cur_user():
-    					<li><a href="{{ config.raw_url }}"><i class="icon-th-list icon-white"></i> 原文档</a></li>
+    					<li><a href="{{ config.raw_url }}"><i class="icon-th-list icon-white"></i> {{_("index_raw")}}</a></li>
     					% end
-    					<li><a href="{{ config.subscribe_url }}"><i class="icon-plus icon-white"></i> 订阅</a></li>
-    					<li><a href="/new" target="_BLANK"><i class="icon-edit icon-white"></i> 编辑器</a></li>
+    					<li><a href="{{ config.subscribe_url }}"><i class="icon-plus icon-white"></i> {{_("index_subscribe")}}</a></li>
+    					<li><a href="/new" target="_BLANK"><i class="icon-edit icon-white"></i> {{_("index_editer")}}</a></li>
     				</ul>
     				% if config.cur_user():
     				<ul class="nav pull-right">
     					<li><a href="{{ config.private_url }}"> {{ config.cur_user() }}</a></li>
-    					<li><a href="/auth/logout"><i class="icon-off icon-white"></i> 退出</a></li>
+    					<li><a href="/auth/logout"><i class="icon-off icon-white"></i> {{ _("index_exit") }}</a></li>
     				</ul>
     				% else:
     				<ul class="nav pull-right">
-    					<li><a href="/auth/login"> 登录</a></li>
+    					<li><a href="/auth/login"> {{ _("index_login") }}</a></li>
     				</ul>
     				% end
     				<form class="navbar-search pull-right" method="GET" action="{{ config.search_url }}">
-    					<i class="icon-search icon-white"></i><input type="text" class="search-query span2" name="value" placeholder="{{ config.search_holder }}"/>
+    					<i class="icon-search icon-white"></i><input type="text" class="search-query span2" name="value" placeholder="{{ _("search_holder") }}"/>
     					<input type="hidden" name="type" value="query" />
                 		<input type="hidden" name="start" value="{{ config.start }}" />
                 		<input type="hidden" name="limit" value="{{ config.limit }}" />
