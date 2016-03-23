@@ -69,7 +69,8 @@ class EntryService:
         for root, _, files in os.walk(config.page_dir):
             for f in files:
                 self._add_page(root + '/' + f)
-        self._init_miscellaneous(self.types.add, self.entries.values())
+        public_entries = [e for e in self.entries.values() if not e.private]
+        self._init_miscellaneous(self.types.add, public_entries)
 
     def add_entry(self, inotified, path, private=False):
         entry = self._init_entry(self.types.entry, path, private)
