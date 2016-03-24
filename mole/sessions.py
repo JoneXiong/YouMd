@@ -18,7 +18,7 @@ COOKIE_NAME_PREFIX = "MoS"  # identifies a cookie as being one used by mole-sess
 COOKIE_PATH = "/"
 DEFAULT_COOKIE_ONLY_THRESH = 4096  # most *nix paging size is 4096. There is no limit in header size in HTTP spec, it is nontheless limited by system's page size
 # 默认60分钟没有请求过则session过期
-DEFAULT_LIFETIME = datetime.timedelta(seconds=60*60*1)#datetime.timedelta(days=7)
+DEFAULT_LIFETIME = datetime.timedelta(seconds=60*60*24*30)#datetime.timedelta(days=7)
 
 #SessionModel 记录置为无效的标志
 SM_RECYCLE_TAG  = "_SESSIONMODEL_RECYCLE_TAG_"
@@ -163,18 +163,14 @@ class Session(object):
             logging.error("session error:", exc_info=True)
             self.terminate(False)
 
-    def make_cookie_headers(self):
+    def make_cookie_headers(self): 
         """Returns a list of cookie headers to send"""
         if not self.sid:
-            m_log  = 'session: have no sid, so expore it'
-            print m_log
-            logging.info(m_log)
+            logging.info('session: have no sid, so expore it')
             return [EXPIRE_COOKIE_FMT % k for k in self.cookie_keys]
 
         if self.cookie_data is None:
-            m_log = 'no cookie headers need to be sent'
-            print m_log
-            logging.info(m_log)
+            logging.info('no cookie headers need to be sent')
             return []
 
         if self.is_ssl_only():
@@ -230,8 +226,13 @@ class Session(object):
             import traceback;traceback.print_exc()
             logging.error("session error:", exc_info=True)
             return 0
+        
+    def flush_expire(self):
+        expire_dt = datetime.datetime.now() + self.lifetime
+        expire_ts = int(time.mktime((expire_dt).timetuple()))
+        return expire_ts
 
-    def __make_sid(self, expire_ts=None, ssl_only=False):
+    def __make_sid(self, expire_ts=None, ssl_only=False): 
         """Returns a new session ID."""
         print 'session: __make_sid'
         if expire_ts is None:
@@ -271,7 +272,7 @@ class Session(object):
             eO = {}
         return eO
 
-    def regenerate_id(self, expiration_ts=None):
+    def regenerate_id(self, expiration_ts=None): 
         """Assigns the session a new session ID (data carries over).  This
         should be called whenever a user authenticates to prevent session
         fixation attacks.
@@ -371,7 +372,7 @@ class Session(object):
 
         self.data = self.__decode_data(pdump)
 
-    def save(self, persist_even_if_using_cookie=False):
+    def save(self, persist_even_if_using_cookie=False): 
         u"""Saves the data associated with this session IF any changes have been made (specifically, if any mutator methods like __setitem__ or the like is called).
 
         If the data is small enough it will be sent back to the user in a cookie instead of using memcache and the datastore.  
@@ -520,7 +521,7 @@ class SessionMiddleware(object):
     memcache/datastore latency which is critical for small sessions.  Larger
     sessions are kept in memcache+datastore instead.  Defaults to 10KB.
     """
-    def __init__(self, app, cookie_key, lifetime=DEFAULT_LIFETIME, no_datastore=True, cookie_only_threshold=DEFAULT_COOKIE_ONLY_THRESH, cookie_name_prefix= COOKIE_NAME_PREFIX):
+    def __init__(self, app, cookie_key, lifetime=DEFAULT_LIFETIME, no_datastore=True, cookie_only_threshold=DEFAULT_COOKIE_ONLY_THRESH, cookie_name_prefix= COOKIE_NAME_PREFIX, flush_expire=False):
         self.app = app
 #        self.sa_session_class = sa_session_class
 #        self.mc_client = mc_client
@@ -528,6 +529,7 @@ class SessionMiddleware(object):
         self.no_datastore = no_datastore
         self.cookie_only_thresh = cookie_only_threshold
         self.cookie_key = cookie_key
+        self.flush_expire = flush_expire
         if not self.cookie_key:
             raise ValueError("cookie_key MUST be specified")
         if len(self.cookie_key) < 32:
@@ -540,10 +542,9 @@ class SessionMiddleware(object):
         _tls.current_session = Session(environ=environ, lifetime=self.lifetime, no_datastore=self.no_datastore, cookie_only_threshold=self.cookie_only_thresh, cookie_key=self.cookie_key)
         # create a hook for us to insert a cookie into the response headers
         def mole_session_start_response(status, headers, exc_info=None):
+            if self.flush_expire:
+                _tls.current_session.regenerate_id(_tls.current_session.flush_expire())
             _tls.current_session.save()
-            m_log  = 'session: to Set-Cookie %s'%str( _tls.current_session.make_cookie_headers() )
-            print m_log
-            logging.info(m_log)
             for ch in _tls.current_session.make_cookie_headers():
                 headers.append(('Set-Cookie', ch))
             return start_response(status, headers, exc_info)
