@@ -51,8 +51,8 @@ class Models:
         """
         model = {
                  'author':{
-                        'name':_("webauthor"),
-                        'url':_("webname")
+                        'name':config.author,
+                        'url':config.home
                            },
                  'path':'the path of the entry',
                  'name':'the displayed name of the entry',
