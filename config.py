@@ -1,4 +1,10 @@
 # coding=utf-8
+import gettext
+
+locale_path = './locale/'
+zh_trans = gettext.translation('lang', locale_path, languages=['cn'])
+en_trans = gettext.translation('lang', locale_path, languages=['en'])
+zh_trans.install()
 
 name = u'欧易佳技术梦 Oejia'
 home = 'http://www.oejia.net'
@@ -29,7 +35,7 @@ other_url = '(.+)'
 start = 1
 limit = 5
 pagination = 15
-search_holder = 'search all site'
+search_holder = 'search_holder'
 time_fmt = '%Y-%m-%d %H:%M:%S'
 date_fmt = '%Y-%m-%d'
 url_fmt = 'yyyy/mm/dd'
@@ -44,12 +50,14 @@ use_comment = True
 backend_md = False
 admin_pwd = '2ws1qa'
 admin_user = 'admin'
-multi_user = [ ]
+multi_user = []
+
 
 def cur_user():
     from mole.sessions import get_current_session
     session = get_current_session()
-    return session.get('username','')
+    return session.get('username', '')
+
 
 private_store = 'private.data'
 private_url = '/private_raw'
