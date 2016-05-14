@@ -30,6 +30,9 @@
                 onchange : function() {
                 	window.localStorage.setItem("youmd_content",this.getValue());
                 },
+                onload : function(){
+                        this.fullscreen();
+                },
                 toolbarIcons : function() {
                 	if (loadicon){
                 		window.editormd.toolbarModes.full.push("||", "publish");
@@ -52,7 +55,7 @@
 		        	}
 		        }
 
-	        }).fullscreen();
+	        });
 	
 	        /*
 	        // or
