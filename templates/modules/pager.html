@@ -6,10 +6,10 @@
 	               <li class="active"><a href="#">{{ number }}</a></li>
 	           % end
 	           % if not number == pager.start and pager.type == 'index':
-	               <li class="disabled"><a href="/?start={{ number }}&limit={{ pager.limit }}">{{ number }}</a></li>
+	               <li class=""><a href="/?start={{ number }}&limit={{ pager.limit }}">{{ number }}</a></li>
 	           % end
 	           % if not number == pager.start and not pager.type == 'index':
-	               <li class="disabled"><a href="{{ config.search_url }}?type={{ pager.type }}&value={{ pager.value }}&start={{ number }}&limit={{ pager.limit }}">{{ number }}</a></li>
+	               <li class=""><a href="{{ config.search_url }}?type={{ pager.type }}&value={{ pager.value }}&start={{ number }}&limit={{ pager.limit }}">{{ number }}</a></li>
 	           % end
 	        % end
 	  </ul>
