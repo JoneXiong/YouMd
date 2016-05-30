@@ -8,12 +8,12 @@
 
 # 使用
 运行：
-python server.py
+> python server.py
 
 访问：
-首页 http://localhost:8081/
+> 首页 http://localhost:8081/
 
-编辑器 http://localhost:8081/new
+> 编辑器 http://localhost:8081/new
 
 在线示例 [www.oejia.net](http://www.oejia.net/)
 
