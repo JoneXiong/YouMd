@@ -20,7 +20,7 @@
     				</ul>
     				% if config.cur_user():
     				<ul class="nav pull-right">
-    					<li><a href="{{ config.private_url }}"> {{ config.cur_user() }}</a></li>
+    					<li><a href="{{ config.private_url }}" title="进入私人空间"> {{ config.cur_user() }}</a></li>
     					<li><a href="/auth/logout"><i class="icon-off icon-white"></i> {{ _("index_exit") }}</a></li>
     				</ul>
     				% else:
