@@ -497,7 +497,7 @@ class EntryService:
             return entry.content
         return None
 
-    def archive(self, archive_type, url, start=1, limit=999999999, private=False):
+    def archive(self, archive_type, url, start=1, limit=999999999, private=False, username=None):
         self.params.error = self.models.error(url=url)
 
         if archive_type == self.types.raw:
@@ -512,6 +512,8 @@ class EntryService:
             _urls = self.urls if private==False else [ e for e in self.all_urls if e not in self.urls]
             urls = [url for url in _urls if url.startswith(prefix)]
             entries, _  =  self._find_by_page(urls, start, limit)
+            if username:
+                entries = [e for e in entries if e.author.name==username]
             count = len(entries)
         else:
             entries = None
