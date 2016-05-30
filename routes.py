@@ -200,6 +200,11 @@ def PrivateRaw(url):
     params = entryService.archive(entryService.types.raw, url, private=True)
     if params.entries == None:
         return template('error', params=params, config=config)
+    else:
+        session = get_current_session()
+        username = session.get('username', '')
+        _entries = [e for e in params.entries if e.author.name==username]
+        params.entries = _entries
     return template('private', params=params, config=config)
 
 
