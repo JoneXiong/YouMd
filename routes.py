@@ -191,20 +191,18 @@ tags: [%s]
 @route('/private_raw:url#.*#')
 @auth_required()
 def PrivateRaw(url):
+    session = get_current_session()
+    username = session.get('username', '')
+    
     url = config.raw_url + url
     raw = entryService.find_raw(url)
     if not raw == None:
         response.headers['Content-Type'] = 'text/plain'
         response.headers['Content-Encoding'] = 'utf-8'
         return raw.strip()
-    params = entryService.archive(entryService.types.raw, url, private=True)
+    params = entryService.archive(entryService.types.raw, url, private=True, username=username)
     if params.entries == None:
         return template('error', params=params, config=config)
-    else:
-        session = get_current_session()
-        username = session.get('username', '')
-        _entries = [e for e in params.entries if e.author.name==username]
-        params.entries = _entries
     return template('private', params=params, config=config)
 
 
