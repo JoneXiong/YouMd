@@ -261,9 +261,10 @@ class EntryService:
         3. refresh the right part of site page
         '''
         for entry in entries:
-            self._init_tag(init_type, entry.url, entry.tags)
-            self._init_category(init_type, entry.url, entry.categories)
-            self._init_monthly_archive(init_type, entry.url)
+            if not entry.private:
+                self._init_tag(init_type, entry.url, entry.tags)
+                self._init_category(init_type, entry.url, entry.categories)
+                self._init_monthly_archive(init_type, entry.url)
         self.update_urls()
         self._init_params()
 
