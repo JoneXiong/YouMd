@@ -52,10 +52,8 @@ docs/_build/
 # PyBuilder
 target/
 
-config.py
 nohup.out
 
-raw/
 .settings
 .project
 .pydevproject
