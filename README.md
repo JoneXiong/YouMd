@@ -8,12 +8,12 @@
 
 # 使用
 运行：
-python server.py
+`python server.py`
 
 访问：
-首页 http://localhost:8081/
+> 首页 http://localhost:8081/
 
-编辑器 http://localhost:8081/new
+> 编辑器 http://localhost:8081/new
 
 在线示例 [www.oejia.net](http://www.oejia.net/)
 
@@ -79,6 +79,14 @@ Screenshots
 - 细节修复完善
 - 增加多用户支持
 - 增加头信息管理功能
+
+### v1.4.0
+
+- 增加国际化的支持
+- 增强全屏化的前端兼容性
+- 优化session更新机制
+- 私人档的多用户支持
+- 优化分页样式效果和内容页样式
 
 
 
