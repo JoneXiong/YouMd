@@ -21,4 +21,10 @@
 	%include misc/analytics.html config=config
 	<script src="{{ config.static_url }}/js/jquery.js"></script>
     <script src="{{ config.static_url }}/js/bootstrap.js"></script>
+
+<script>
+$(function(){
+   $(".nav a[href='"+ window.location.pathname +"']").parent().addClass('active');
+});
+</script>
 </div>
