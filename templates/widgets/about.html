@@ -1,6 +1,6 @@
 % if not abouts == None:
     % for about in abouts:
-        <div class="widget-about">
+        <div class="widget widget-about">
             <h3 class="widget-header">About This {{ about.display }}</h3>
                 <div class="widget-content">
 				    % if about.type == 'entry' and not about.prev_url == None:
