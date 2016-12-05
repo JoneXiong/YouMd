@@ -9,14 +9,14 @@
     			</a><a class="brand" href="/">{{ config.name }}</a>
     			<div class="nav-collapse collapse">
     				<ul class="nav">
-    					<li><a href="/"><i class="icon-home icon-white"></i> {{ _("index_home") }}</a></li>
-    					<li><a href="{{ config.archive_url }}"><i class="icon-book icon-white"></i> {{ _("index_index") }}</a></li>
-    					<li><a href="{{ config.about_url }}"><i class="icon-user icon-white"></i> {{_("index_about")}}</a></li>
+    					<li><a href="/"> {{ _("index_home") }}</a></li>
+    					<li><a href="{{ config.archive_url }}"> {{ _("index_index") }}</a></li>
+    					<li><a href="{{ config.about_url }}"> {{_("index_about")}}</a></li>
     					% if config.cur_user():
-    					<li><a href="{{ config.raw_url }}"><i class="icon-th-list icon-white"></i> {{_("index_raw")}}</a></li>
+    					<li><a href="{{ config.raw_url }}"> {{_("index_raw")}}</a></li>
     					% end
-    					<li><a href="{{ config.subscribe_url }}"><i class="icon-plus icon-white"></i> {{_("index_subscribe")}}</a></li>
-    					<li><a href="/new" target="_BLANK"><i class="icon-edit icon-white"></i> {{_("index_editer")}}</a></li>
+    					<li><a href="{{ config.subscribe_url }}"> {{_("index_subscribe")}}</a></li>
+    					<li><a href="/new" target="_BLANK"> {{_("index_editer")}}</a></li>
     				</ul>
     				% if config.cur_user():
     				<ul class="nav pull-right">
