@@ -12,24 +12,55 @@
 	    $(function() {
 	    	var loadicon = true;
 	    	var raw_url = '{{ raw_url }}';
-			$.get(raw_url, function(md){
-		        var editor = editormd("editormd", {
-	                width: "90%",
-	                height: 700,
-	                markdown : md,
-	                emoji : true,	//www.emoji-cheat-sheet.com
-	                taskList : true,
-	                tocm : true,         // Using [TOCM]
-	                tex : true,                   // 开启科学公式TeX语言支持，默认关闭		http://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css
-	
-	                flowChart : true,             // 开启流程图支持，默认关闭
-	                sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
-	                
-		            path : "/static/editormd/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
-		            
-		            imageUpload : true,
-		            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp"],
-		            imageUploadURL : "/upload",
+                function update_save(cm){
+			$.ajax( {
+			    url: '/update_save',
+			    data:{
+				raw_url: raw_url,
+				content: cm.getValue()
+			    },
+			    type: 'post',
+			    success: function(data) {
+				if(data.code ==0 ){
+					$.bootstrapGrowl("文档已保存！", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
+				}else if(data.code ==-2){
+					href = '/auth/login?pop=1';
+				    var win = window.open(href, 'login_window', 'height=450,width=780,resizable=yes,scrollbars=yes');
+				    win.focus();
+				}
+			     },
+			     error : function() {
+				$.bootstrapGrowl("文服务器异常！请稍后重试", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
+			     }
+			});
+                 }
+		$.get(raw_url, function(md){
+			var editor = editormd("editormd", {
+			width: "90%",
+			height: 700,
+			markdown : md,
+			emoji : true,	//www.emoji-cheat-sheet.com
+			taskList : true,
+			tocm : true,         // Using [TOCM]
+			tex : true,                   // 开启科学公式TeX语言支持，默认关闭		http://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css
+
+			flowChart : true,             // 开启流程图支持，默认关闭
+			sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+
+			path : "/static/editormd/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
+
+			imageUpload : true,
+			imageFormats : ["jpg", "jpeg", "gif", "png", "bmp"],
+			imageUploadURL : "/upload",
+
+			onload : function() {
+				var keyMap = {
+				    "Ctrl-S": function(cm) {
+					update_save(cm);
+				    },
+				};
+				this.addKeyMap(keyMap);
+			},
 		            
 	                onchange : function() {
 	                	window.localStorage.setItem("youmd_content_update",this.getValue());
@@ -55,26 +86,7 @@
 			        },
 			        toolbarHandlers : {
 			        	update : function(cm, icon, cursor, selection) {
-							$.ajax( {  
-							    url: '/update_save',
-							    data:{
-							    	raw_url: raw_url,
-							    	content: cm.getValue()
-							    },  
-							    type: 'post',  
-							    success: function(data) {  
-							        if(data.code ==0 ){  
-							        	$.bootstrapGrowl("文档已保存！", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
-							        }else if(data.code ==-2){
-							        	href = '/auth/login?pop=1';
-							            var win = window.open(href, 'login_window', 'height=450,width=780,resizable=yes,scrollbars=yes');
-							            win.focus();
-							        }  
-							     },  
-							     error : function() {  
-							        $.bootstrapGrowl("文服务器异常！请稍后重试", { type: 'success',align: 'center',width: 'auto',allow_dismiss: false ,offset: {from: 'top', amount: 60}});
-							     }
-							});
+						update_save(cm);
 			        	},
 			        	load_last: function(cm, icon, cursor, selection) {
 			        		this.setValue(window.localStorage.getItem('youmd_content_update'));
