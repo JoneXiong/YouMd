@@ -64,3 +64,5 @@ private_url = '/private_raw'
 
 upload_path = './upload'
 file_url = '/files'
+
+use_git = False

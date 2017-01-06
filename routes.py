@@ -233,6 +233,16 @@ def UpdateSave():
     m_file = open(entry.path, 'w')
     m_file.write('%s\n%s' % (entry.header, content))
     m_file.close()
+    file_name = entry.path.replace(config.entry_dir,'')
+    if file_name.startswith('/'):
+        file_name = file_name.replace('/','',1)
+    if config.use_git:
+        from git import Repo
+        repo = Repo('./entry')
+        #git_master = repo.heads.master
+        git_index = repo.index
+        git_index.add([file_name])
+        git_index.commit('Update %s'%file_name)
     entryService.add_entry(False, entry.path, entry.private)
     return {'code': 0, 'msg': '更新成功'}
 
@@ -284,10 +294,18 @@ tags: [%s]
 ---
     ''' % (title, cat, tag)
     m_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    path = 'raw/entry/%s-%s.md' % (m_date, name)
+    file_name ='%s-%s.md'%(m_date, name)
+    path = os.path.join(config.entry_dir,file_name) #'raw/entry/%s-%s.md' % (m_date, name)
     m_file = open(path, 'w+')
     m_file.write('%s\n%s' % (head, content))
     m_file.close()
+    if config.use_git:
+        from git import Repo
+        repo = Repo('./entry')
+        #git_master = repo.heads.master
+        git_index = repo.index
+        git_index.add([file_name])
+        git_index.commit('Add %s'%file_name)
 
     entryService.add_entry(True, path, True if private else False)
     return {'code': 0, 'msg': '发布成功'}
