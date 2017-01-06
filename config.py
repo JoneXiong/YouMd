@@ -6,10 +6,10 @@ zh_trans = gettext.translation('lang', locale_path, languages=['cn'])
 en_trans = gettext.translation('lang', locale_path, languages=['en'])
 zh_trans.install()
 
-name = u'欧易佳技术梦 Oejia'
-home = 'http://www.oejia.net'
-author = 'Oejia'
-disqus = '"webpymdblog=="'
+name = u'MarkDown Doc'
+home = 'https://github.com/JoneXiong/YouMd'
+author = 'YouMd'
+disqus = '"xxx"'
 template_dir = 'template'
 entry_dir = 'raw/entry'
 page_dir = 'raw/page'
@@ -48,7 +48,7 @@ debug = True
 
 use_comment = True
 backend_md = False
-admin_pwd = '2ws1qa'
+admin_pwd = 'admin'
 admin_user = 'admin'
 multi_user = []
 
