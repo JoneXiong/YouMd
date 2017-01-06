@@ -63,7 +63,12 @@ class EntryService:
         self.private_list = private_list
         print 'private list',self.private_list
         for root, _, files in os.walk(config.entry_dir):
+            _parent = root.replace(config.entry_dir,'')
+            if _parent.startswith('.') or _parent.startswith('/.'):
+                continue
             for f in files:
+                if f.startswith('.'):
+                    continue
                 _path = root + '/' + f
                 self.add_entry(False, _path, _path in private_list)
         for root, _, files in os.walk(config.page_dir):
