@@ -30,7 +30,7 @@
 
 页面上点edit图标即可直接进入编辑修改
 
-开启git支持需要先安装 GitPython 并在 config 中开启 use_git
+开启git支持需要先安装 GitPython 并在 config.py 中开启 use_git
 
 # 定位
 拿来即用的MarkDown编辑器；
