@@ -42,7 +42,6 @@ class EntryService:
         self.save_private()
         
     def del_private(self, path):
-        self.private_list.append(path)
         try:
             self.private_list.remove(path)
         except:pass
