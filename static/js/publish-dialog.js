@@ -97,6 +97,7 @@
 							    type: 'post',  
 							    success: function(data) {  
 							        if(data.code ==0 ){  
+										window.localStorage.setItem("youmd_content", '');
 										var msg = "发布成功！\n\n是否去首页查看？"; 
 										if (confirm(msg)==true){ 
 										    window.location.href = '/';
