@@ -32,6 +32,8 @@
 
 开启git支持需要先安装 GitPython 并在 config.py 中开启 use_git
 
+默认开启了md内容中style,script,iframe等HTML标签的解析，需要调整可以编辑entry.html 改变 htmlDecode 配置项
+
 # 定位
 拿来即用的MarkDown编辑器；
 
