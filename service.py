@@ -486,12 +486,16 @@ class EntryService:
         def replacer(match):
             key = match.group('key')
             val = match.group('val')
+            try:
+                val = val.encode('utf8')
+            except:
+                pass
             if key=='tag':
                 return self.parse_tag(val)
             elif key=='category':
                 return self.parse_category(val)
             return match.group(0)
-        _content = re.sub(r'\<(?P<key>tag|category)\>(?P<val>\w+)\</(?P=key)\>', replacer,entry.content)
+        _content = re.sub(r'\<(?P<key>tag|category)\>(?P<val>[\s\S]*)\</(?P=key)\>', replacer,entry.content)
         entry.parse_content = _content
         return entry
 
