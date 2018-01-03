@@ -183,6 +183,7 @@ class EntryService:
                 content = content.decode('utf-8')
             except:pass
             entry.content = content
+            entry.parse_content = None
             entry.header = header
             if config.backend_md:
                 import markdown
@@ -478,6 +479,40 @@ class EntryService:
             pages += 1
         return self.models.pager(pager_type, value, total, pages, start, limit)
 
+    def backend_parse(self, entry):
+        '''
+        后端解析
+        '''
+        def replacer(match):
+            key = match.group('key')
+            val = match.group('val')
+            if key=='tag':
+                return self.parse_tag(val)
+            elif key=='category':
+                return self.parse_category(val)
+            return match.group(0)
+        _content = re.sub(r'\<(?P<key>tag|category)\>(?P<val>\w+)\</(?P=key)\>', replacer,entry.content)
+        entry.parse_content = _content
+        return entry
+
+    def parse_tag(self, tag):
+        from mole.template import template
+        _tags = self.by_tags.get(tag)
+        if _tags:
+            entries, total = self._find_by_page(_tags.urls, 1, 100)
+        else:
+            entries = []
+        return template('parse/parse_tag.html', entries=entries)
+
+    def parse_category(self, category):
+        from mole.template import template
+        _categorys = self.by_categories.get(category)
+        if _categorys:
+            entries, total = self._find_by_page(_categorys.urls, 1, 100)
+        else:
+            entries = []
+        return template('parse/parse_category.html', entries=entries)
+
     def find_by_url(self, entry_type, url):
         entry, abouts = None, [self.types.blog]
         if entry_type == self.types.entry:
@@ -485,7 +520,7 @@ class EntryService:
             abouts.insert(0, self.types.entry)
         if entry_type == self.types.page:
             entry = self.pages.get(url)
-        self.params.entry = entry
+        self.params.entry = entry and self.backend_parse(entry) or entry
         self.params.entries = self._init_related_entries(url)
         self.params.error = self.models.error(url=url)
         self.params.primary.abouts = self._init_abouts_widget(abouts, url)
