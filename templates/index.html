@@ -9,7 +9,7 @@
 				<div class="span9">
 					<div id="excerpts">
 					% for entry in params.entries:
-						% include modules/excerpt.html excerpt=entry
+						% include modules/excerpt.html excerpt=entry, config=config
 					% end
 					</div>
 					% include modules/pager.html pager=params.pager, config=config
