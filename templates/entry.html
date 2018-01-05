@@ -1,63 +1,65 @@
 <!DOCTYPE html>
 <html lang='zh'>
-	% include layout/header.html config=config, title=params.entry.name
-	
-	<link rel="stylesheet" href="/static/editormd/css/editormd.preview.min.css" />
-<body>
-	% include layout/navbar.html config=config
-	<div id="content">
-		<div class="container">
-			<div class="row">
-				<div class="span9">
-					% include modules/entry.html entry=params.entry, config=config
-					<hr>
-					% include modules/info.html entry=params.entry, config=config
-					% include modules/category.html categories=params.entry.categories, config=config
-					% include modules/tag.html tags=params.entry.tags, config=config
-					% include modules/related.html related_entries=params.entries, config=config
-					<hr>
-					% if config.use_comment:
-						% include modules/comment.html config=config, entry=params.entry
-					% end	
-				</div>
-				<!--
-				<div class="span3">
-				</div>
-				-->
-				<div class="span3">
-					% include layout/three/secondary.html params=params.secondary, config=config
-					% include layout/three/primary.html params=params.primary, config=config
-				</div>
-			</div>
-		</div>
-	</div>
-	% include misc/analytics.html config=config
-	% include layout/footer.html config=config
+    % include layout/header.html config=config, title=params.entry.name
+    <link rel="stylesheet" href="/static/editormd/css/editormd.preview.min.css" />
+    
+    <body>
+        % include layout/navbar.html config=config
+        <div id="content">
+            <div class="container">
+                <div class="row">
+                    <div class="span9">
+                        % include modules/entry.html entry=params.entry, config=config
+                        <hr>
+                            % include modules/info.html entry=params.entry, config=config 
+                            % include modules/category.html categories=params.entry.categories, config=config 
+                            % include modules/tag.html tags=params.entry.tags, config=config 
+                            % include modules/related.html related_entries=params.entries, config=config
+                        <hr>
+                        % if config.use_comment: 
+                            % include modules/comment.html config=config, entry=params.entry 
+                        % end
+                    </div>
+                    <!-- <div class="span3"></div>
+                    -->
+                    <div class="span3">
+                        % include layout/three/secondary.html params=params.secondary, config=config 
+                        % include layout/three/primary.html params=params.primary, config=config
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <script src="/static/editormd/lib/marked.min.js"></script>
-    <script src="/static/editormd/lib/prettify.min.js"></script>
-    
-    <script src="/static/editormd/lib/raphael.min.js"></script>
-    <script src="/static/editormd/lib/underscore.min.js"></script>
-    <script src="/static/editormd/lib/sequence-diagram.min.js"></script>
-    <script src="/static/editormd/lib/flowchart.min.js"></script>
-    <script src="/static/editormd/lib/jquery.flowchart.min.js"></script>
-    
-    <script src="/static/editormd/editormd.js"></script>
-    
-	<script type="text/javascript">
-		$(function() {
-			editormd.markdownToHTML("entry-content", {
-	                    htmlDecode      : "style,script,iframe",  // you can filter tags decode
-	                    emoji           : true,
-	                    taskList        : true,
-	                    tex             : true,  // 默认不解析
-	                    flowChart       : true,  // 默认不解析
-	                    sequenceDiagram : true,  // 默认不解析
-	                    lineNumbers : false,
-	                }).find(".CodeMirror-gutters").css("border-right", "none")
-		})
-	</script>
-	<script src="{{ config.static_url }}/js/admin.js"></script>
-</body>
+        % include misc/analytics.html config=config 
+        % include layout/footer.html config=config
+
+        <script src="/static/editormd/lib/marked.min.js"></script>
+        <script src="/static/editormd/lib/prettify.min.js"></script>
+        <script src="/static/editormd/lib/raphael.min.js"></script>
+        <script src="/static/editormd/lib/underscore.min.js"></script>
+        <script src="/static/editormd/lib/sequence-diagram.min.js"></script>
+        <script src="/static/editormd/lib/flowchart.min.js"></script>
+        <script src="/static/editormd/lib/jquery.flowchart.min.js"></script>
+        <script src="/static/editormd/editormd.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                editormd.markdownToHTML("entry-content", {
+                    htmlDecode: "style,script,iframe",
+                    // you can filter tags decode
+                    emoji: true,
+                    taskList: true,
+                    tex: true,
+                    // 默认不解析
+                    flowChart: true,
+                    // 默认不解析
+                    sequenceDiagram: true,
+                    // 默认不解析
+                    lineNumbers: false,
+                }).find(".CodeMirror-gutters").css("border-right", "none")
+            })
+        </script>
+        <script src="{{ config.static_url }}/js/admin.js"></script>
+    </body>
+
 </html>
+
