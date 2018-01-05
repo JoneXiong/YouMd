@@ -36,6 +36,7 @@
                  }
 		$.get(raw_url, function(md){
 			var editor = editormd("editormd", {
+                        codeFold : true,
 			width: "90%",
 			height: 700,
 			markdown : md,
