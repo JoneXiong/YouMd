@@ -450,13 +450,14 @@ class EntryService:
         """
         queries = [q.decode('utf-8') for q  in query.split(' ')]
         urls = []
-        for query in queries:
-            for entry in self.entries.values():
-                if entry.private:
-                    continue
+        for entry in self.entries.values():
+            if entry.private:
+                continue
+            for query in queries:
                 try:
                     entry.content.index(query)
                     urls.append(entry.url)
+                    break
                 except:
                     pass
         return self._find_by_page(sorted(urls), start, limit)
