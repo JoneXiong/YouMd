@@ -495,7 +495,7 @@ class EntryService:
             elif key=='category':
                 return self.parse_category(val)
             return match.group(0)
-        _content = re.sub(r'\<(?P<key>tag|category)\>(?P<val>[\s\S]*)\</(?P=key)\>', replacer,entry.content)
+        _content = re.sub(r'\<(?P<key>tag|category)\>(?P<val>[\s\S]*?)\</(?P=key)\>', replacer,entry.content)
         entry.parse_content = _content
         return entry
 
