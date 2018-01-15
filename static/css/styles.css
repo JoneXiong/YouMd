@@ -1,3 +1,9 @@
 @import url(bootstrap.css);
 @import url(bootstrap-responsive.css);
 @import url(customize.css);
+
+@media print{
+.entry {
+    width: 870px;
+}
+}

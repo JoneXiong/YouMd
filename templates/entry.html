@@ -41,6 +41,7 @@
         <script src="/static/editormd/lib/flowchart.min.js"></script>
         <script src="/static/editormd/lib/jquery.flowchart.min.js"></script>
         <script src="/static/editormd/editormd.js"></script>
+        <script src="/static/editormd/lib/jQuery.print.js"></script>
         <script type="text/javascript">
             $(function() {
                 editormd.markdownToHTML("entry-content", {
@@ -56,6 +57,23 @@
                     // 默认不解析
                     lineNumbers: false,
                 }).find(".CodeMirror-gutters").css("border-right", "none");
+
+                $(window).keydown(function(e) {
+                    if (e.ctrlKey && e.keyCode == 66) {
+                        $('.entry').print({
+                            globalStyles: true,
+                            //是否包含父文档的样式
+                            mediaPrint: true,
+                            //是否包含media='print'的链接标签。会被globalStyles选项覆盖
+                            noPrintSelector: ".span3,.span2",
+                            //不想打印的元素的jQuery选择器
+                            iframe: true,
+                            //是否使用一个iframe来替代打印表单的弹出窗口
+                            prepend: false //是否将用户更新的表单输入框内容作为打印内容（通过迭代每一个表单元素来实现）
+                        })
+                    }
+                });
+
             })
         </script>
         <script src="{{ config.static_url }}/js/admin.js"></script>
