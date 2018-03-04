@@ -46,7 +46,7 @@ subscribe = 10
 cache = False
 debug = True
 
-use_comment = True
+use_comment = False
 backend_md = False
 admin_pwd = 'admin'
 admin_user = 'admin'
@@ -66,3 +66,5 @@ upload_path = './upload'
 file_url = '/files'
 
 use_git = False
+
+read_need_login = False

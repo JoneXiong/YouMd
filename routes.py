@@ -16,6 +16,13 @@ from __init__ import entryService
 media_prefix = 'static'
 auth_required = authenticator(login_url='/auth/login')
 
+if hasattr(config,'read_need_login') and config.read_need_login:
+    rauth_check = auth_required
+else:
+    def rauth_check():
+        def decorator(handler, *a, **ka):
+            return handler
+        return decorator
 
 @route('/%s/:file#.*#' % media_prefix)
 def media(file):
@@ -23,11 +30,13 @@ def media(file):
 
 
 @route('/new')
+@rauth_check()
 def editor():
     return template('editor')
 
 
 @route('/')
+@rauth_check()
 def Index():
     limit = int(request.GET.get('limit', 10))
     start = int(request.GET.get('start', 1))
@@ -36,6 +45,7 @@ def Index():
 
 
 @route('/language')
+@rauth_check()
 def language():
     session = get_current_session()
     session["language"] = str(request.GET.get('language', 'cn'))
@@ -47,6 +57,7 @@ def language():
 
 
 @route('/blog:url#.*#')
+@rauth_check()
 def Entry(url):
     if not url in ['', '/']:
         url = config.entry_url + url
@@ -62,6 +73,7 @@ def Entry(url):
 
 
 @route('/archive:url#.*#')
+@rauth_check()
 def Archive(url):
     url = config.archive_url + url
     params = entryService.archive(entryService.types.entry, url)
@@ -71,6 +83,7 @@ def Archive(url):
 
 
 @route('/about.html')
+@rauth_check()
 def About():
     url = config.about_url
     params = entryService.find_by_url(entryService.types.page, url)
@@ -80,6 +93,7 @@ def About():
 
 
 @route('/atom.xml')
+@rauth_check()
 def Subscribe():
     params = entryService.search(entryService.types.index, config.subscribe_url)
     response.headers['Content-Type'] = 'text/xml'
@@ -87,6 +101,7 @@ def Subscribe():
 
 
 @route('/search')
+@rauth_check()
 def Search():
     type = request.GET.get('type', entryService.types.query)
     value = request.GET.get('value', '')
@@ -342,12 +357,14 @@ def logout():
 
 
 @route('/robots.txt')
+@rauth_check()
 def robots():
     response.headers['Content-Type'] = 'text/plain'
     return template('robots.html', config=config)
 
 
 @route('/sitemap.xml')
+@rauth_check()
 def sitemap():
     params = entryService.search(entryService.types.index, config.subscribe_url, limit=10000)
     response.headers['Content-Type'] = 'text/xml'
