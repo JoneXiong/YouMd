@@ -208,7 +208,7 @@ tags: [%s]
 def PrivateRaw(url):
     session = get_current_session()
     username = session.get('username', '')
-    
+
     url = config.raw_url + url
     raw = entryService.find_raw(url)
     if not raw == None:
@@ -229,7 +229,6 @@ def Update(url):
 
 
 @route('/update_save', method='POST')
-# @auth_required()
 def UpdateSave():
     session = get_current_session()
     username = session.get('username', '')
@@ -290,7 +289,6 @@ def DeletePost():
 
 
 @route('/publish', method='POST')
-# @auth_required()
 def publish():
     session = get_current_session()
     username = session.get('username', '')
