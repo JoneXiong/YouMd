@@ -245,14 +245,14 @@ def UpdateSave():
         entry = entryService.find_by_url(entryService.types.page, page_url).entry
 
     m_file = open(entry.path, 'w')
-    tags = [e for e in entry.tags if not e.startswith('__')]
+    #tags = [e for e in entry.tags if not e.startswith('__')]
     head = '''---
 layout: post
 title: %s
 category: %s
 tags: [%s]
 ---
-    ''' % (entry.name, entry.categories and ','.join(entry.categories) or '', tags and ','.join(tags) or '')
+    ''' % (entry.name, entry.categories and ','.join(entry.categories) or '', entry.tags and ','.join(entry.tags) or '')
     m_file.write('%s\n%s' % (head, content))
     m_file.close()
     file_name = entry.path.replace(config.entry_dir,'')
