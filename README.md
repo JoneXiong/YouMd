@@ -21,7 +21,9 @@
 
 
 # 说明
-使用说明参考文档: [使用说明](http://www.oejia.net/blog/2016/02/23/youmd_base_use.html)
+使用说明及文档: 
+- [基本使用说明](http://www.oejia.net/blog/2016/02/23/youmd_base_use.html)
+- [其他文档](http://www.oejia.net/search?type=category&value=YouMd&start=1&limit=5)
 
 发布保存的文档默认以.md存放在raw/entry/目录下
 
