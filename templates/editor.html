@@ -6,6 +6,7 @@
 	<script src="/static/js/jquery.min.js"></script>
 	<script src="/static/editormd/editormd.min.js"></script>
 	<script src="/static/js/publish-dialog.js"></script>
+	<script src="/static/js/lrz.bundle.js"></script>
 	<script type="text/javascript">
 	    $(function() {
 	    	var loadicon = true;
@@ -65,6 +66,56 @@
 	            path : "../lib/"
 	        });
 	        */
+
+		function paste(event) {
+		    var clipboardData = event.originalEvent.clipboardData;
+		    var items, item, types;
+		    if (clipboardData) {
+			items = clipboardData.items;
+			if (!items) {
+			    return;
+			}
+			// 保存在剪贴板中的数据类型
+			types = clipboardData.types || [];
+			for (var i = 0; i < types.length; i++) {
+			    if (types[i] === 'Files') {
+				item = items[i];
+				break;
+			    }
+			}
+			// 判断是否为图片数据
+			if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+			    // 读取该图片
+			    var file = item.getAsFile(),
+				reader = new FileReader();
+			    reader.readAsDataURL(file);
+			    reader.onload = function () {
+				//前端压缩
+				lrz(reader.result, {width: 1080}).then(function (res) {
+				    $.ajax({
+					url: '/paste_upload',
+					type: 'post',
+					data: {
+					    "image": res.base64,
+					    "name": new Date().getTime()
+					},
+					contentType: 'application/x-www-form-urlencoded;charest=UTF-8',
+					success: function (data) {
+					    if (data.success==1){
+						editor.insertValue('\n![]('+ data.url +')\n');
+					    }else{
+						alert(data.message);
+					    }
+					}
+				    })
+				});
+			    }
+			}
+		    }
+		}
+
+		$('#editormd').on('paste', paste);
+
 	    });
 	</script>
 	

@@ -399,3 +399,30 @@ def upload():
         f.write(uploadfile.file.read())
     url = '%s/%s/%s' % (config.file_url, tnow.strftime('%Y%m'), filename)
     return {'success': 1, 'message': '上传成功', 'url': url}
+
+
+@route('/paste_upload', method='POST')
+def paste_upload():
+    import base64
+    session = get_current_session()
+    username = session.get('username', '')
+    if not username:
+        return {'success': 0, 'message': '请先登录', 'url': ''}
+
+    data = request.POST.get("image", '')
+    head,body = data.split(',',1)
+    ftype = head.split('/')[1].replace(';base64', '')
+    data = base64.b64decode(body)
+
+    tnow = datetime.datetime.now()
+    parent_path = os.path.join(config.upload_path, tnow.strftime('%Y%m'))
+    if not os.path.exists(parent_path):
+        os.makedirs(parent_path)
+
+    m_f = ("000" + str(tnow.microsecond / 1000))[-3:]
+    filename = tnow.strftime("%d%H%M%S") + m_f + '.' + ftype
+    upload_path = os.path.join(parent_path, filename)
+    with open(upload_path, 'w+b') as f:
+        f.write(data)
+    url = '%s/%s/%s' % (config.file_url, tnow.strftime('%Y%m'), filename)
+    return {'success': 1, 'message': '上传成功', 'url': url}
