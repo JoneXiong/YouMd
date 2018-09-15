@@ -1,0 +1,14 @@
+version: '2'
+services:
+  youmd:
+    build:
+      context: .
+    container_name: youmd
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    volumes: 
+      - ./raw/entry:/app/raw/entry
+      - ./upload:/app/upload
+    ports:
+      - 8081:8081
