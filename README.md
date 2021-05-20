@@ -19,6 +19,13 @@
 
 在线示例 [www.oejia.net](http://www.oejia.net/)
 
+# 专业版
+- 性能提升数倍，支持更庞大的文档大小和数量
+- 支持自定义首页
+- 支付配置项控制是否所有页面需要登录才能访问
+- 部署更简单，更好地支持本地 Windows 系统
+联系我们 https://www.calluu.cn/page/contactus
+
 
 # 说明
 使用说明及文档: 
